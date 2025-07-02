@@ -14,7 +14,7 @@
     "Compiler": {
       "RootNamespace": "GameFish",
       "DefineConstants": "SANDBOX;ADDON;DEBUG",
-      "NoWarn": "1701;1702;1591;",
+      "NoWarn": "1701;1702;1591;IDE0130",
       "WarningsAsErrors": "",
       "TreatWarningsAsErrors": false,
       "Nullables": false,
