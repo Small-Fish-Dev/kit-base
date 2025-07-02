@@ -23,7 +23,7 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "StartupScene": "scenes/example/default.scene",
+    "StartupScene": "scenes/examples/default.scene",
     "LaunchMode": "Normal",
     "SystemScene": "scenes/bootloader.scene"
   }
