@@ -17,16 +17,16 @@ public static partial class GameFish
 	public static void Log( this Component c, params object[] log )
 	{
 		if ( c is null )
-			c.Log( "???", log );
+			Log( "???", log );
 		else
-			c.Log( c, log );
+			Log( c.ToString(), log );
 	}
 
 	public static void Warn( this Component c, params object[] log )
 	{
 		if ( c is null )
-			c.Warn( "???", log );
+			Warn( "???", log );
 		else
-			c.Warn( c, log );
+			Warn( c.ToString(), log );
 	}
 }
