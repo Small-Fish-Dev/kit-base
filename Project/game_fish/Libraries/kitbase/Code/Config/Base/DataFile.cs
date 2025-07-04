@@ -106,10 +106,17 @@ public abstract partial class DataFile<TData> : Component
 
 	protected override Task OnLoad()
 	{
-		if ( !(Scene?.IsEditor ?? true) )
+		if ( AutoLoading && !(Scene?.IsEditor ?? true) )
 			TryLoad();
 
 		return base.OnLoad();
+	}
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		AutoSave();
 	}
 
 	/// <returns> A new instance of <typeparamref name="TData"/>. </returns>
@@ -199,9 +206,9 @@ public abstract partial class DataFile<TData> : Component
 	[Button, Group( GROUP_FILE ), Title( "Save" )]
 	public bool TrySave()
 	{
-		IsDirty = false;
-
 		DebugLog( "Trying to save." );
+
+		IsDirty = false;
 
 		if ( string.IsNullOrWhiteSpace( FileName ) )
 		{
@@ -309,6 +316,9 @@ public abstract partial class DataFile<TData> : Component
 		return true;
 	}
 
+	/// <summary>
+	/// Auto-saves if data was modified, after a delay.
+	/// </summary>
 	public bool AutoSave( bool force = false )
 	{
 		if ( !force && (!IsDirty || !NextAutoSave) )
