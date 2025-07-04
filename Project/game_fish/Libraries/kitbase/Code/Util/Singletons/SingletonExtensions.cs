@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public static class SingletonUtility
+public static class SingletonExtensions
 {
 	/// <summary>
 	/// Retrieves the first valid instance of a component in the scene and caches it. <br />
