@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -12,18 +13,11 @@ namespace GameFish;
 /// Can read/write any type of JSON-serializable data.
 /// </summary>
 [Icon( "save" )]
-public abstract partial class DataFile<TData> : Component
+public abstract partial class DataFile<TDataComp, TDataClass> : Singleton<TDataComp> where TDataComp : DataFile<TDataComp, TDataClass>
 {
 	public const string GROUP_FILE = "💾 File";
 	public const string GROUP_DATA = "🔍 Data";
 	public const string GROUP_DEBUG = "🐞 Debug";
-
-	private static DataFile<TData> _instance;
-	public static DataFile<TData> Instance
-	{
-		get => _instance.GetSingleton( allowEditor: true );
-		set => _instance = value;
-	}
 
 	[JsonIgnore]
 	[Property, Group( GROUP_DATA ), Title( "Data" ), Order( 42069 )]
@@ -34,8 +28,9 @@ public abstract partial class DataFile<TData> : Component
 	[Property, ReadOnly]
 	public abstract string FileName { get; }
 
-	public static string Folder => Game.Ident;
-	public static string FilePath => $"{Folder}/{Instance?.FileName ?? "error.gamefish"}";
+	public static string Folder => Package.TryParseIdent( Game.Ident, out var info ) ? info.package : null;
+	public string FilePath => ValidFilePath ? $"{Folder}/{FileName ?? "ERROR.gamefish"}" : null;
+	public bool ValidFilePath => !string.IsNullOrWhiteSpace( FileName ) && !string.IsNullOrWhiteSpace( Folder );
 
 	public JsonWriterOptions WriteOptions { get; set; } = new()
 	{
@@ -67,6 +62,7 @@ public abstract partial class DataFile<TData> : Component
 	[Property, Group( GROUP_FILE )]
 	public float AutoSaveDelay { get; set; } = 30f;
 
+	[JsonIgnore]
 	[Property, Group( GROUP_FILE ), Title( "Next Auto-Save" )]
 	public double? AutoSaveTimer => IsDirty ? NextAutoSave.Relative : null;
 	public RealTimeUntil NextAutoSave { get; protected set; }
@@ -119,18 +115,20 @@ public abstract partial class DataFile<TData> : Component
 		AutoSave();
 	}
 
-	/// <returns> A new instance of <typeparamref name="TData"/>. </returns>
-	protected TData CreateData()
-		=> TypeLibrary.Create<TData>( type: typeof( TData ) );
+	public static bool TrySet<T>( string name, T value )
+		=> Instance?.Set( name, value ) ?? false;
+
+	public static bool TryGet<T>( string name, out T value, T defaultValue = default )
+		=> Instance?.Get( name, out value, defaultValue ) ?? (value = default) is true;
 
 	[Button, Group( GROUP_FILE ), Title( "Load" )]
 	public bool TryLoad()
 	{
 		DebugLog( "Trying to load." );
 
-		if ( string.IsNullOrWhiteSpace( FileName ) )
+		if ( !ValidFilePath )
 		{
-			this.Warn( $"{nameof( FileName )} property was missing/invalid" );
+			this.Warn( $"File path was missing/invalid! folder:\"{Folder ?? "null"}\"" );
 			return false;
 		}
 
@@ -160,7 +158,7 @@ public abstract partial class DataFile<TData> : Component
 
 			if ( objParsed is not null )
 			{
-				var propertyTable = TypeLibrary.GetPropertyDescriptions( data, onlyOwn: true );
+				var propertyTable = TypeLibrary.GetPropertyDescriptions( data, onlyOwn: false );
 
 				foreach ( var kv in objParsed )
 				{
@@ -168,14 +166,19 @@ public abstract partial class DataFile<TData> : Component
 
 					if ( p is null )
 					{
-						this.Log( $"file had unhandled member \"{kv.Key}\"" );
+						this.Log( $"File had unhandled member \"{kv.Key}\"." );
 						continue;
 					}
 
 					if ( Json.TryDeserialize( kv.Value.ToString(), p.PropertyType, out var val ) )
-						TypeLibrary.SetProperty( data, p.Name, val );
+					{
+						if ( !TypeLibrary.SetProperty( data, p.Name, val ) )
+							this.Warn( $"Failed to set {kv.Key} to \"{val}\"." );
+					}
 					else
-						this.Warn( $"failed to deserialize {kv.Key} as {p.PropertyType}" );
+					{
+						this.Warn( $"Failed to deserialize {kv.Key} as {p.PropertyType}" );
+					}
 				}
 			}
 
@@ -190,6 +193,12 @@ public abstract partial class DataFile<TData> : Component
 
 				return true;
 			}
+			else
+			{
+				this.Warn( $"Failed to serialize {typeof( TDataClass )} to a JSON object." );
+
+				return false;
+			}
 		}
 		catch ( Exception e )
 		{
@@ -197,10 +206,6 @@ public abstract partial class DataFile<TData> : Component
 
 			return false;
 		}
-
-		this.Warn( "Failed to load." );
-
-		return false;
 	}
 
 	[Button, Group( GROUP_FILE ), Title( "Save" )]
@@ -210,9 +215,9 @@ public abstract partial class DataFile<TData> : Component
 
 		IsDirty = false;
 
-		if ( string.IsNullOrWhiteSpace( FileName ) )
+		if ( !ValidFilePath )
 		{
-			this.Warn( $"{nameof( FileName )} property was missing/invalid" );
+			this.Warn( $"File path was missing/invalid!" );
 			return false;
 		}
 
@@ -232,6 +237,7 @@ public abstract partial class DataFile<TData> : Component
 				return false;
 			}
 
+			FileSystem.OrganizationData.CreateDirectory( Folder );
 			FileSystem.OrganizationData.WriteAllText( FilePath, str );
 
 			DebugLog( "Successfully saved." );
@@ -245,12 +251,6 @@ public abstract partial class DataFile<TData> : Component
 			return false;
 		}
 	}
-
-	public static bool TrySet<T>( string name, T value )
-		=> Instance?.Set( name, value ) ?? false;
-
-	public static bool TryGet<T>( string name, out T value, T defaultValue = default )
-		=> Instance?.Get( name, out value, defaultValue ) ?? (value = default) is true;
 
 	protected bool Set<T>( string name, T value )
 	{
@@ -268,7 +268,9 @@ public abstract partial class DataFile<TData> : Component
 			if ( !IsDirty )
 			{
 				IsDirty = true;
-				NextAutoSave = AutoSaveDelay;
+
+				if ( AutoSaving )
+					NextAutoSave = AutoSaveDelay;
 			}
 
 			DebugLog( $"Set \"{name}\" to \"{value}\"" );
