@@ -25,6 +25,6 @@
     "CsProjName": "",
     "StartupScene": "scenes/examples/default.scene",
     "LaunchMode": "Normal",
-    "SystemScene": "scenes/bootloader.scene"
+    "SystemScene": "scenes/system.scene"
   }
 }
