@@ -40,6 +40,7 @@ public abstract partial class DataFile<TDataComp, TDataClass> : Singleton<TDataC
 	/// <summary>
 	/// If the file data has been modified in some way since saving.
 	/// </summary>
+	[JsonIgnore]
 	[Property, ReadOnly, Group( GROUP_FILE )]
 	public bool IsDirty { get; protected set; }
 
