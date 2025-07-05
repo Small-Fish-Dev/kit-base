@@ -11,7 +11,7 @@ namespace GameFish;
 [Icon( "highlight_alt" )]
 [Group( COMPONENT_GROUP )]
 [EditorHandle( "materials/tools/mesh_icons/quad.png" )]
-public class BaseTrigger : Component, Component.ITriggerListener
+public partial class BaseTrigger : Component, Component.ITriggerListener, Component.ExecuteInEditor
 {
 	public const string COMPONENT_GROUP = "Triggers";
 
@@ -20,6 +20,9 @@ public class BaseTrigger : Component, Component.ITriggerListener
 	public const string GROUP_CALLBACK = "⚡ Callbacks";
 
 	public const int ORDER_CALLBACK = 420;
+
+	public const string TAG_TRIGGER = "trigger";
+	public const string TAG_LADDER = "ladder";
 
 	public enum ColliderType
 	{
@@ -43,26 +46,22 @@ public class BaseTrigger : Component, Component.ITriggerListener
 	/// Allows automatically creating, updating and previewing a collider.
 	/// </summary>
 	[Property, Group( GROUP_COLLIDER )]
-	public ColliderType Collider
+	public virtual ColliderType Collider
 	{
 		get => _colType;
 		set { _colType = value; UpdateColliders(); }
 	}
-	private ColliderType _colType;
+	private ColliderType _colType = ColliderType.Box;
 
-	public bool UsingBox => Collider is ColliderType.Box;
-	public bool UsingSphere => Collider is ColliderType.Sphere;
+	public virtual bool UsingBox => Collider is ColliderType.Box;
+	public virtual bool UsingSphere => Collider is ColliderType.Sphere;
 
 	[ShowIf( nameof( UsingBox ), true )]
 	[Property, Group( GROUP_COLLIDER )]
-	public BBox BoxSize
+	public virtual BBox BoxSize
 	{
 		get => _boxSize;
-		set
-		{
-			_boxSize = value;
-			UpdateColliders();
-		}
+		set { _boxSize = value; UpdateColliders(); }
 	}
 	private BBox _boxSize = new( new Vector3( -64, -128f, -128f ), new Vector3( 64f, 128f, 128f ) );
 
@@ -140,12 +139,16 @@ public class BaseTrigger : Component, Component.ITriggerListener
 	public BoxCollider Box { get; set; }
 	public SphereCollider Sphere { get; set; }
 
-	public virtual Color GizmoColor { get; } = Color.Green.Desaturate( 0.8f );
+	public virtual TagSet DefaultTags { get; } = [TAG_TRIGGER];
+	public virtual Color GizmoColor { get; } = Color.Green.Desaturate( 0.8f ).Darken( 0.2f );
 
 	protected override Task OnLoad()
 	{
 		if ( !Scene.IsValid() )
 			return base.OnLoad();
+
+		// Update tags immediately.
+		Tags?.Add( DefaultTags ?? [] );
 
 		// Give us a box collider if we have none.
 		if ( !Components.Get<Collider>( FindMode.EverythingInSelf ).IsValid() )
@@ -162,9 +165,15 @@ public class BaseTrigger : Component, Component.ITriggerListener
 
 		UpdateColliders();
 
-		Initialized = true;
-
 		Transform.OnTransformChanged += UpdateColliders;
+
+		Initialized = true;
+	}
+
+	protected void DebugLog( params object[] log )
+	{
+		if ( DebugLogging )
+			this.Log( log );
 	}
 
 	protected override void OnUpdate()
@@ -173,6 +182,9 @@ public class BaseTrigger : Component, Component.ITriggerListener
 
 		if ( DebugGizmos )
 			DrawGizmos();
+
+		if ( this.InEditor() )
+			return;
 
 		if ( OnInsideUpdate is null || Touching is null )
 			return;
@@ -191,6 +203,9 @@ public class BaseTrigger : Component, Component.ITriggerListener
 	protected override void OnFixedUpdate()
 	{
 		base.OnFixedUpdate();
+
+		if ( this.InEditor() )
+			return;
 
 		if ( OnInsideFixedUpdate is null || Touching is null )
 			return;
@@ -211,8 +226,6 @@ public class BaseTrigger : Component, Component.ITriggerListener
 		if ( !Scene.IsValid() )
 			return;
 
-		Tags?.Add( "trigger" );
-
 		// Box
 		if ( UsingBox )
 		{
@@ -223,7 +236,7 @@ public class BaseTrigger : Component, Component.ITriggerListener
 			Box.IsTrigger = true;
 
 			Box.Scale = BoxSize.Size;
-			Box.Center = default;
+			Box.Center = BoxSize.Center;
 		}
 		else if ( Box.IsValid() )
 		{
@@ -247,10 +260,36 @@ public class BaseTrigger : Component, Component.ITriggerListener
 		}
 	}
 
-	protected void DebugLog( params object[] log )
+	public void OnTriggerEnter( GameObject obj )
 	{
-		if ( DebugLogging )
-			this.Log( log );
+		if ( !PassesFilters( obj ) )
+		{
+			DebugLog( obj + " FAILED the filter " );
+
+			if ( OnFailedFilter is not null )
+			{
+				try
+				{
+					OnFailedFilter.Invoke( this, obj );
+				}
+				catch ( Exception e )
+				{
+					this.Warn( $"OnFailedFilter callback exception: {e}" );
+				}
+			}
+
+			return;
+		}
+
+		DebugLog( obj + " PASSED the filter" );
+
+		OnTouchStart( obj );
+	}
+
+	public void OnTriggerExit( GameObject obj )
+	{
+		if ( obj is not null && (Touching?.Contains( obj ) ?? false) )
+			OnTouchStop( obj );
 	}
 
 	protected virtual void OnTouchStart( GameObject obj )
@@ -303,38 +342,6 @@ public class BaseTrigger : Component, Component.ITriggerListener
 	protected virtual bool PassesFilters( GameObject obj )
 	{
 		return obj.IsValid();
-	}
-
-	public void OnTriggerEnter( GameObject obj )
-	{
-		if ( !PassesFilters( obj ) )
-		{
-			DebugLog( obj + " FAILED the filter " );
-
-			if ( OnFailedFilter is not null )
-			{
-				try
-				{
-					OnFailedFilter.Invoke( this, obj );
-				}
-				catch ( Exception e )
-				{
-					this.Warn( $"OnFailedFilter callback exception: {e}" );
-				}
-			}
-
-			return;
-		}
-
-		DebugLog( obj + " PASSED the filter" );
-
-		OnTouchStart( obj );
-	}
-
-	public void OnTriggerExit( GameObject obj )
-	{
-		if ( Touching?.Contains( obj ) ?? false )
-			OnTouchStop( obj );
 	}
 
 	protected override void DrawGizmos()

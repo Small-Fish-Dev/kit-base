@@ -7,7 +7,7 @@ namespace GameFish;
 /// Capable of creating, updating and previewing its collision.
 /// </summary>
 [Title( "Filtered Trigger" )]
-public class FilterTrigger : BaseTrigger, Component.ITriggerListener
+public partial class FilterTrigger : BaseTrigger
 {
 	public const string GROUP_FILTER_TAGS = "🏳 Tag Filter";
 	public const string GROUP_FILTER_TYPE = "⌨ Type Filter";
@@ -80,7 +80,7 @@ public class FilterTrigger : BaseTrigger, Component.ITriggerListener
 	[Property, Group( GROUP_FILTER_FUNC ), Title( "Passes Filter" )]
 	public Func<BaseTrigger, GameObject, bool> FunctionFilter { get; set; }
 
-	public override Color GizmoColor { get; } = Color.Green.Desaturate( 0.4f ).Darken( 0.1f );
+	public override Color GizmoColor { get; } = Color.Green.Desaturate( 0.6f ).Darken( 0.25f );
 
 	/// <returns> If the object passes this trigger's tag filters(if any) and custom filter(if any). </returns>
 	protected override bool PassesFilters( GameObject obj )
