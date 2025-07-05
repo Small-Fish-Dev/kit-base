@@ -616,8 +616,8 @@
             "Maxs": "64,128,128"
           },
           "Collider": "Box",
-          "DebugGizmos": false,
-          "DebugLogging": false,
+          "DebugGizmos": true,
+          "DebugLogging": true,
           "ExcludeTags": {
             "Enabled": false,
             "Tags": null
