@@ -198,6 +198,12 @@
             "__guid": "b6d83571-0158-4a0b-936c-8786d26d6314",
             "__enabled": true,
             "BodyWeight": 1,
+            "Clothing": [
+              "models/citizen_clothes/body/human03.clothing",
+              "models/citizen_clothes/full_outfit/pirate_outfit/pirate_outfit.clothing",
+              "models/citizen_clothes/hat/bandana_mask/bandana_mask.clothing",
+              "models/citizen_clothes/hair/hair_tied_dreads/hair_tied_dreads.clothing"
+            ],
             "EyeSource": null,
             "EyesWeight": 1,
             "HeadWeight": 1,
@@ -214,13 +220,20 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "Ragdoll": null,
+            "Ragdoll": {
+              "_type": "component",
+              "component_id": "2006bcc0-669e-479c-bdd5-c062a7541db0",
+              "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
+              "component_type": "ModelPhysics"
+            },
             "SkinnedModel": {
               "_type": "component",
               "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
               "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
               "component_type": "SkinnedModelRenderer"
-            }
+            },
+            "UseCustomClothing": true,
+            "UseLocalClothing": false
           }
         ],
         "Children": []
@@ -230,7 +243,7 @@
         "__version": 1,
         "Flags": 0,
         "Name": "Body",
-        "Position": "0,-112.2249,0",
+        "Position": "0,0,0",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
         "Tags": "",
@@ -273,11 +286,11 @@
             "__guid": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
             "__enabled": true,
             "AnimationGraph": null,
-            "BodyGroups": 341,
+            "BodyGroups": 65,
             "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
-            "MaterialGroup": null,
+            "MaterialGroup": "default",
             "MaterialOverride": null,
             "Materials": null,
             "Model": "models/citizen/citizen.vmdl",
@@ -312,7 +325,206 @@
             "UseAnimGraph": true
           }
         ],
-        "Children": []
+        "Children": [
+          {
+            "__guid": "0514c128-6686-4cb0-a153-3f3d45f18df7",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Clothing - pirate_outfit",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "clothing",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "d19e7328-af11-4ca5-b741-f60e79230fb3",
+                "__enabled": true,
+                "AnimationGraph": null,
+                "BodyGroups": 18446744073709551615,
+                "BoneMergeTarget": {
+                  "_type": "component",
+                  "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
+                  "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
+                  "component_type": "SkinnedModelRenderer"
+                },
+                "CreateAttachments": false,
+                "CreateBoneObjects": false,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+                "Morphs": {},
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "PlaybackRate": 1,
+                "RenderOptions": {
+                  "GameLayer": true,
+                  "OverlayLayer": false,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Sequence": {
+                  "Name": null,
+                  "Looping": true,
+                  "Blending": false
+                },
+                "Tint": "1,1,1,1",
+                "UseAnimGraph": true
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "a252fb1c-b9f8-4750-854a-832d0e609281",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Clothing - bandana_mask",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "clothing",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "7f42ee1e-dc9a-4a92-8c71-e9e3161eaed0",
+                "__enabled": true,
+                "AnimationGraph": null,
+                "BodyGroups": 18446744073709551615,
+                "BoneMergeTarget": {
+                  "_type": "component",
+                  "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
+                  "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
+                  "component_type": "SkinnedModelRenderer"
+                },
+                "CreateAttachments": false,
+                "CreateBoneObjects": false,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": "models/citizen_clothes/hat/bandana_mask/models/bandana_mask.vmdl",
+                "Morphs": {},
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "PlaybackRate": 1,
+                "RenderOptions": {
+                  "GameLayer": true,
+                  "OverlayLayer": false,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Sequence": {
+                  "Name": null,
+                  "Looping": true,
+                  "Blending": false
+                },
+                "Tint": "1,1,1,1",
+                "UseAnimGraph": true
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "db88267c-af55-4fd7-89c2-bc13394253f4",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Clothing - hair_tied_dreads",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "clothing",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "3a4b8a43-ee53-402c-a73b-47301df91ce6",
+                "__enabled": true,
+                "AnimationGraph": null,
+                "BodyGroups": 18446744073709551615,
+                "BoneMergeTarget": {
+                  "_type": "component",
+                  "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
+                  "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
+                  "component_type": "SkinnedModelRenderer"
+                },
+                "CreateAttachments": false,
+                "CreateBoneObjects": false,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": "models/citizen_clothes/hair/hair_tied_dreads/models/hair_tied_dreads.vmdl",
+                "Morphs": {},
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "PlaybackRate": 1,
+                "RenderOptions": {
+                  "GameLayer": true,
+                  "OverlayLayer": false,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Sequence": {
+                  "Name": null,
+                  "Looping": true,
+                  "Blending": false
+                },
+                "Tint": "0.15801,0.11214,0.07938,1",
+                "UseAnimGraph": true
+              }
+            ],
+            "Children": []
+          }
+        ]
       },
       {
         "__guid": "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8",
