@@ -198,7 +198,7 @@ public class BaseTrigger : Component, Component.ITriggerListener
 		try
 		{
 			foreach ( var obj in Touching )
-				OnInsideUpdate.Invoke( this, obj );
+				OnInsideFixedUpdate.Invoke( this, obj );
 		}
 		catch ( Exception e )
 		{
