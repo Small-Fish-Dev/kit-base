@@ -438,8 +438,6 @@ public class BaseTrigger : Component, Component.ITriggerListener
 
 	public void OnTriggerEnter( GameObject obj )
 	{
-		this.Log( obj );
-
 		if ( !TryPassFilter( obj ) )
 		{
 			DebugLog( obj + " FAILED the filter " );
