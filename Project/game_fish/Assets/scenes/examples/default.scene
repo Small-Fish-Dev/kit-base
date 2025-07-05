@@ -585,8 +585,97 @@
         "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5": "a88ea43a-69a6-4921-a049-5fb13f6b97bc",
         "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8": "abbcc21c-f1eb-4121-95cd-70bcb80d51ed",
         "cdf9082a-6a58-4902-ad04-5706a69ec252": "570d271e-9c6b-4133-ac81-99ff7e0f0d48",
-        "ecaf68d2-3205-4636-ac23-a3076c510e85": "b6891830-f501-44a8-bbfe-2de06a1c4147"
+        "ecaf68d2-3205-4636-ac23-a3076c510e85": "b6891830-f501-44a8-bbfe-2de06a1c4147",
+        "fed53c08-740c-478e-99ca-bb43a6dd25ae": "f17817e3-2b94-4d23-9bcd-03147a07a61f",
+        "b6d83571-0158-4a0b-936c-8786d26d6314": "adb9036e-23a3-481e-a453-a3e6dca5b796",
+        "77ffd783-71f9-45f3-9f18-c9bd791a0356": "0b134113-ba45-4335-8aa8-ad153ae4c214",
+        "2006bcc0-669e-479c-bdd5-c062a7541db0": "69e6b5f4-778d-4a38-8d5e-818f67308822"
       }
+    },
+    {
+      "__guid": "a978acd8-0e54-4324-a50b-dd29e39534ea",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Example Trigger",
+      "Position": "128,-160,0.00005070865",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "trigger",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "GameFish.BaseTrigger",
+          "__guid": "3d86771a-6873-480d-8200-52a15bafa1e9",
+          "__enabled": true,
+          "BoxSize": {
+            "Mins": "-64,-128,-128",
+            "Maxs": "64,128,128"
+          },
+          "Collider": "Box",
+          "DebugGizmos": false,
+          "DebugLogging": false,
+          "ExcludeTags": {
+            "Enabled": false,
+            "Tags": null
+          },
+          "FilterTags": true,
+          "FilterType": true,
+          "FindMode": "Enabled, InSelf, InAncestors, InDescendants",
+          "IncludeTags": {
+            "Enabled": true,
+            "Tags": "player"
+          },
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnEmpty": null,
+          "OnEnter": null,
+          "OnExit": null,
+          "OnFailedFilter": null,
+          "OnFirstEnter": null,
+          "OnInsideFixedUpdate": null,
+          "OnInsideUpdate": null,
+          "PassesFilter": null,
+          "RequireTags": {
+            "Enabled": false,
+            "Tags": null
+          },
+          "RequireType": "GameFish.BasePlayer",
+          "SphereRadius": 64
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "8ad72446-1d33-47a6-8a79-443886730bca",
+          "__enabled": false,
+          "Center": "0,0,0",
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "128,256,256",
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {

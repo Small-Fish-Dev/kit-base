@@ -1,14 +1,15 @@
 namespace GameFish;
 
 /// <summary>
-/// A <see cref="PhysicsEntity"/> that does.. more stuff.
+/// Something with physics and an <see cref="ActorModel"/> that can take damage.
 /// </summary>
-public partial class Actor : PhysicsEntity, IAnimated, IRagdoll
+public partial class Actor : PhysicsEntity
 {
     public const string FEATURE_ACTOR = "🎭 Actor";
 
+	/// <summary>
+	/// The model of the actor, which may be <see cref="ActorSkinnedModel"/> or some other kind.
+	/// </summary>
     [Property, Feature( FEATURE_ACTOR )]
-    public SkinnedModelRenderer AnimatedModel { get; set; }
-    [Property, Feature( FEATURE_ACTOR )]
-    public ModelPhysics Ragdoll { get; set; }
+    public ActorModel Model { get; set; }
 }
