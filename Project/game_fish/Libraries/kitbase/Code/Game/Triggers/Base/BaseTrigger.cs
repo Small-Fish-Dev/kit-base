@@ -343,8 +343,8 @@ public class BaseTrigger : Component, Component.ITriggerListener
 
 		_ = Collider switch
 		{
-			ColliderType.Box => this.DrawBox( BoxSize, GizmoColor ),
-			ColliderType.Sphere => this.DrawSphere( Sphere?.Radius ?? 0f, Sphere?.Center ?? default, GizmoColor ),
+			ColliderType.Box => this.DrawBox( BoxSize.Translate( Box?.Center ?? default ), GizmoColor ),
+			ColliderType.Sphere => this.DrawSphere( SphereRadius, Sphere?.Center ?? default, GizmoColor ),
 			_ => false
 		};
 	}
