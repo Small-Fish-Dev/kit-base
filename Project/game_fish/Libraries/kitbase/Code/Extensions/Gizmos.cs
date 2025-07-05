@@ -38,4 +38,40 @@ public static partial class GizmoExtensions
 
 		return true;
 	}
+
+	/// <summary>
+	/// Draws a slightly fancy sphere that shows depth.
+	/// </summary>
+	/// <param name="comp"> The component drawing this. </param>
+	/// <param name="radius"> The radius of the sphere. </param>
+	/// <param name="center"> The offset of the sphere from world transform. </param>
+	/// <param name="c"> The default color. </param>
+	/// <param name="tWorld"> The world transform to use. Defaults to the component's world transform. </param>
+	/// <returns> If the box could be drawn. </returns>
+	public static bool DrawSphere( this Component comp, in float radius, in Vector3 center, Color c, Transform? tWorld = null )
+	{
+		if ( !comp.IsValid() || radius == 0f )
+			return false;
+
+		using ( Gizmo.Scope( comp.Id + "-sphere", Transform.Zero ) )
+		{
+			Gizmo.Transform = tWorld ??= comp.WorldTransform;
+
+			var isSelected = Gizmo.IsSelected;
+
+			Gizmo.Draw.IgnoreDepth = true;
+			Gizmo.Draw.LineThickness = 1f;
+			Gizmo.Draw.Color = c.WithAlphaMultiplied( isSelected ? 0.2f : 0.1f );
+
+			Gizmo.Draw.LineSphere( center, radius );
+
+			Gizmo.Draw.IgnoreDepth = false;
+			Gizmo.Draw.LineThickness = isSelected ? 2f : 1f;
+			Gizmo.Draw.Color = c;
+
+			Gizmo.Draw.LineSphere( center, radius );
+		}
+
+		return true;
+	}
 }
