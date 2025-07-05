@@ -4,24 +4,22 @@ using System.Threading.Tasks;
 namespace GameFish;
 
 /// <summary>
-/// A trigger volume with various filters. <br />
-/// Capable of creating, updating and previewing its own collider.
+/// A trigger volume with callbacks and no filters. <br />
+/// Capable of creating, updating and rendering its collision.
 /// </summary>
+[Title( "Trigger" )]
 [Icon( "highlight_alt" )]
-[Title( "Filtered Trigger" )]
+[Group( COMPONENT_GROUP )]
 [EditorHandle( "materials/tools/mesh_icons/quad.png" )]
 public class BaseTrigger : Component, Component.ITriggerListener
 {
+	public const string COMPONENT_GROUP = "Triggers";
+
 	public const string GROUP_DEBUG = "🐞 Debug";
 	public const string GROUP_COLLIDER = "🏀 Collider";
-	public const string GROUP_FILTER_FUNC = "💻 Function Filter";
-	public const string GROUP_FILTER_TAGS = "🏳 Tag Filter";
-	public const string GROUP_FILTER_TYPE = "⌨ Type Filter";
 	public const string GROUP_CALLBACK = "⚡ Callbacks";
 
-	const int ORDER_FILTER_TAGS = 69;
-	const int ORDER_FILTER_TYPE = 88;
-	const int ORDER_CALLBACK = 420;
+	public const int ORDER_CALLBACK = 420;
 
 	public enum ColliderType
 	{
@@ -93,70 +91,6 @@ public class BaseTrigger : Component, Component.ITriggerListener
 	[Property, Group( GROUP_DEBUG )]
 	public bool DebugGizmos { get; set; } = false;
 
-	/// <summary>
-	/// If true: include/exclude by type.
-	/// </summary>
-	[Order( ORDER_FILTER_TYPE )]
-	[Property, Group( GROUP_FILTER_TYPE )]
-	public bool FilterType { get; set; }
-
-	/// <summary>
-	/// They must have this type of component on them.
-	/// </summary>
-	[Order( ORDER_FILTER_TYPE )]
-	[ShowIf( nameof( FilterType ), true )]
-	[TargetType( typeof( Component ) )]
-	[Property, Group( GROUP_FILTER_TYPE )]
-	public Type RequireType { get; set; } = typeof( BasePlayer );
-
-	/// <summary>
-	/// How to look for the component.
-	/// </summary>
-	[Order( ORDER_FILTER_TYPE )]
-	[ShowIf( nameof( FilterType ), true )]
-	[TargetType( typeof( Component ) )]
-	[Property, Group( GROUP_FILTER_TYPE )]
-	public FindMode FindMode { get; set; } = FindMode.EnabledInSelf | FindMode.InAncestors | FindMode.InDescendants;
-
-	/// <summary>
-	/// If true: include/exclude by tags.
-	/// </summary>
-	[Order( ORDER_FILTER_TAGS )]
-	[Property, Group( GROUP_FILTER_TAGS )]
-	public bool FilterTags { get; set; } = true;
-
-	/// <summary>
-	/// An object with any of these tags are accepted.
-	/// </summary>
-	[Order( ORDER_FILTER_TAGS )]
-	[ShowIf( nameof( FilterTags ), true )]
-	[Property, Group( GROUP_FILTER_TAGS )]
-	public TagFilter IncludeTags { get; set; } = new() { Enabled = true, Tags = [Entity.TAG_PLAYER] };
-
-	/// <summary>
-	/// An object with any of these tags are always ignored. <br />
-	/// They're excluded even if they have an <see cref="IncludeTags"/> tag.
-	/// </summary>
-	[Order( ORDER_FILTER_TAGS )]
-	[Property, Group( GROUP_FILTER_TAGS )]
-	[ShowIf( nameof( FilterTags ), true )]
-	public TagFilter ExcludeTags { get; set; }
-
-	/// <summary>
-	/// An object must have all of these these tags to trigger this.
-	/// </summary>
-	[Order( ORDER_FILTER_TAGS )]
-	[Property, Group( GROUP_FILTER_TAGS )]
-	[ShowIf( nameof( FilterTags ), true )]
-	public TagFilter RequireTags { get; set; }
-
-	/// <summary>
-	/// An additional, final check you can do in ActionGraph.
-	/// </summary>
-	[Order( ORDER_FILTER_TYPE + 1 )]
-	[Property, Group( GROUP_FILTER_FUNC )]
-	public Func<BaseTrigger, GameObject, bool> PassesFilter { get; set; }
-
 	/// <summary> An object that passed filters just touched this. </summary>
 	[Order( ORDER_CALLBACK )]
 	[Property, Group( GROUP_CALLBACK )]
@@ -206,7 +140,7 @@ public class BaseTrigger : Component, Component.ITriggerListener
 	public BoxCollider Box { get; set; }
 	public SphereCollider Sphere { get; set; }
 
-	public virtual Color GizmoColor { get; } = Color.Green.Desaturate( 0.5f ).Darken( 0.1f );
+	public virtual Color GizmoColor { get; } = Color.Green.Desaturate( 0.8f );
 
 	protected override Task OnLoad()
 	{
@@ -319,77 +253,6 @@ public class BaseTrigger : Component, Component.ITriggerListener
 			this.Log( log );
 	}
 
-	/// <returns> If the object is valid and passes this trigger's tag filters(if any) and custom filter(if any). </returns>
-	protected virtual bool TryPassFilter( GameObject obj )
-	{
-		if ( !obj.IsValid() )
-			return false;
-
-		if ( !TagsPassFilters( obj.Tags ) )
-			return false;
-
-		if ( !TypesPassFilters( obj ) )
-			return false;
-
-		if ( PassesFilter is not null )
-		{
-			try
-			{
-				return PassesFilter.Invoke( this, obj );
-			}
-			catch ( Exception e )
-			{
-				this.Warn( $"PassesFilter callback exception: {e}" );
-			}
-		}
-
-		return true;
-	}
-
-	/// <summary>
-	/// Returns if this set of tags is allowed. <br />
-	/// Defaults to true if <see cref="FilterTags"/> is disabled.
-	/// </summary>
-	public bool TypesPassFilters( GameObject obj )
-	{
-		if ( !obj.IsValid() )
-			return false;
-
-		if ( !FilterType || RequireType is null )
-			return true;
-
-		return obj.Components.Get( RequireType, FindMode ).IsValid();
-	}
-
-	/// <summary>
-	/// Returns if this set of tags is allowed. <br />
-	/// Defaults to true if <see cref="FilterTags"/> is disabled.
-	/// </summary>
-	public bool TagsPassFilters( ITagSet tags )
-	{
-		if ( !FilterTags )
-			return true;
-
-		if ( tags is null )
-			return false;
-
-		var passed = false;
-
-		// Include
-		if ( IncludeTags.HasAny( tags ) )
-			passed = true;
-
-		// Exclude
-		if ( ExcludeTags.HasAny( tags ) )
-			return false;
-
-		// Require
-		if ( !tags.HasAll( RequireTags.Tags ?? [] ) )
-			return false;
-
-		return passed;
-	}
-
 	protected virtual void OnTouchStart( GameObject obj )
 	{
 		Touching ??= [];
@@ -420,7 +283,7 @@ public class BaseTrigger : Component, Component.ITriggerListener
 		Touching?.Remove( obj );
 
 		// Validate
-		Touching?.RemoveAll( obj => !TryPassFilter( obj ) );
+		Touching?.RemoveAll( obj => !PassesFilters( obj ) );
 
 		// Callback
 		OnExit?.Invoke( this, obj );
@@ -436,9 +299,15 @@ public class BaseTrigger : Component, Component.ITriggerListener
 		OnEmpty?.Invoke( this, obj );
 	}
 
+	/// <returns> If the object is valid. </returns>
+	protected virtual bool PassesFilters( GameObject obj )
+	{
+		return obj.IsValid();
+	}
+
 	public void OnTriggerEnter( GameObject obj )
 	{
-		if ( !TryPassFilter( obj ) )
+		if ( !PassesFilters( obj ) )
 		{
 			DebugLog( obj + " FAILED the filter " );
 
