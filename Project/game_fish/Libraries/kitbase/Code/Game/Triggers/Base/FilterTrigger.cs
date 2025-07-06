@@ -9,6 +9,8 @@ namespace GameFish;
 [Title( "Filtered Trigger" )]
 public partial class FilterTrigger : BaseTrigger
 {
+	public const string FEATURE_FILTERS = "📋 Filters";
+
 	public const string GROUP_FILTER_TAGS = "🏳 Tag Filter";
 	public const string GROUP_FILTER_TYPE = "⌨ Type Filter";
 	public const string GROUP_FILTER_FUNC = "💻 Function Filter";
@@ -20,6 +22,7 @@ public partial class FilterTrigger : BaseTrigger
 	/// If true: include/exclude by type.
 	/// </summary>
 	[Order( ORDER_FILTER_TYPE )]
+	[Feature( FEATURE_FILTERS )]
 	[Property, Group( GROUP_FILTER_TYPE )]
 	public bool FilterType { get; set; } = true;
 
@@ -27,6 +30,7 @@ public partial class FilterTrigger : BaseTrigger
 	/// They must have this type of component on them.
 	/// </summary>
 	[Order( ORDER_FILTER_TYPE )]
+	[Feature( FEATURE_FILTERS )]
 	[ShowIf( nameof( FilterType ), true )]
 	[TargetType( typeof( Component ) )]
 	[Property, Group( GROUP_FILTER_TYPE )]
@@ -36,6 +40,7 @@ public partial class FilterTrigger : BaseTrigger
 	/// How to look for the component.
 	/// </summary>
 	[Order( ORDER_FILTER_TYPE )]
+	[Feature( FEATURE_FILTERS )]
 	[ShowIf( nameof( FilterType ), true )]
 	[TargetType( typeof( Component ) )]
 	[Property, Group( GROUP_FILTER_TYPE )]
@@ -45,6 +50,7 @@ public partial class FilterTrigger : BaseTrigger
 	/// If true: include/exclude by tags.
 	/// </summary>
 	[Order( ORDER_FILTER_TAGS )]
+	[Feature( FEATURE_FILTERS )]
 	[Property, Group( GROUP_FILTER_TAGS )]
 	public bool FilterTags { get; set; } = true;
 
@@ -52,6 +58,7 @@ public partial class FilterTrigger : BaseTrigger
 	/// An object with any of these tags are accepted.
 	/// </summary>
 	[Order( ORDER_FILTER_TAGS )]
+	[Feature( FEATURE_FILTERS )]
 	[ShowIf( nameof( FilterTags ), true )]
 	[Property, Group( GROUP_FILTER_TAGS )]
 	public TagFilter IncludeTags { get; set; } = new() { Enabled = true, Tags = [BaseEntity.TAG_PLAYER] };
@@ -61,6 +68,7 @@ public partial class FilterTrigger : BaseTrigger
 	/// They're excluded even if they have an <see cref="IncludeTags"/> tag.
 	/// </summary>
 	[Order( ORDER_FILTER_TAGS )]
+	[Feature( FEATURE_FILTERS )]
 	[Property, Group( GROUP_FILTER_TAGS )]
 	[ShowIf( nameof( FilterTags ), true )]
 	public TagFilter ExcludeTags { get; set; }
@@ -69,6 +77,7 @@ public partial class FilterTrigger : BaseTrigger
 	/// An object must have all of these these tags to trigger this.
 	/// </summary>
 	[Order( ORDER_FILTER_TAGS )]
+	[Feature( FEATURE_FILTERS )]
 	[Property, Group( GROUP_FILTER_TAGS )]
 	[ShowIf( nameof( FilterTags ), true )]
 	public TagFilter RequireTags { get; set; }
@@ -77,6 +86,7 @@ public partial class FilterTrigger : BaseTrigger
 	/// An additional, final check you can do in ActionGraph.
 	/// </summary>
 	[Order( ORDER_FILTER_TYPE + 1 )]
+	[Feature( FEATURE_FILTERS )]
 	[Property, Group( GROUP_FILTER_FUNC ), Title( "Passes Filter" )]
 	public Func<BaseTrigger, GameObject, bool> FunctionFilter { get; set; }
 
