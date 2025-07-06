@@ -26,3 +26,6 @@ code/Properties/*
 
 # Exported / standalone games
 Exports/
+
+# Kit example content
+!Assets/*/example/*
