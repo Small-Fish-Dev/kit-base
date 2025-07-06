@@ -112,7 +112,7 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 	/// <summary> The last/only object occupying this trigger just exited. </summary>
 	[Order( ORDER_CALLBACK )]
 	[Property, Group( GROUP_CALLBACK )]
-	public Action<BaseTrigger, GameObject> OnEmpty { get; set; }
+	public Action<BaseTrigger, GameObject> OnEmptied { get; set; }
 
 	/// <summary> Called every update for each object within this trigger. </summary>
 	[Order( ORDER_CALLBACK )]
@@ -310,7 +310,7 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 		}
 		catch ( Exception e )
 		{
-			this.Warn( $"OnEnter callback exception: {e}" );
+			this.Warn( $"{nameof( OnEnter )} callback exception: {e}" );
 		}
 
 		// Let 'em know.
@@ -324,18 +324,35 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 		// Validate
 		Touching?.RemoveAll( obj => !PassesFilters( obj ) );
 
+		if ( Touching is null || Touching.Count <= 0 )
+			OnLastExit( obj );
+
 		// Callback
 		OnExit?.Invoke( this, obj );
 	}
 
 	protected virtual void OnFirstEntered( GameObject obj )
 	{
-		OnFirstEnter?.Invoke( this, obj );
+		try
+		{
+			OnFirstEnter?.Invoke( this, obj );
+		}
+		catch ( Exception e )
+		{
+			this.Warn( $"{nameof( OnFirstEnter )} callback exception: {e}" );
+		}
 	}
 
-	protected virtual void OnEmptied( GameObject obj )
+	protected virtual void OnLastExit( GameObject obj )
 	{
-		OnEmpty?.Invoke( this, obj );
+		try
+		{
+			OnEmptied?.Invoke( this, obj );
+		}
+		catch ( Exception e )
+		{
+			this.Warn( $"{nameof( OnEmptied )} callback exception: {e}" );
+		}
 	}
 
 	/// <returns> If the object is valid. </returns>
