@@ -235,8 +235,8 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 			Box.Enabled = !(Scene?.IsEditor ?? true);
 			Box.IsTrigger = true;
 
-			Box.Scale = BoxSize.Size;
-			Box.Center = BoxSize.Center;
+			Box.Scale = BoxSize.Size - BoxSize.Center;
+			Box.Center = default;
 		}
 		else if ( Box.IsValid() )
 		{
