@@ -5,5 +5,5 @@ namespace GameFish;
 /// </summary>
 public interface ISkinned
 {
-    public SkinnedModelRenderer SkinnedModel { get; set; }
+    public SkinnedModelRenderer SkinRenderer { get; set; }
 }

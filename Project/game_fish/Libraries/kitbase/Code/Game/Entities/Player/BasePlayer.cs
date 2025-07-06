@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public /*abstract*/ partial class BasePlayer : Actor
+public /*abstract*/ partial class BasePlayer : BaseActor
 {
 
 

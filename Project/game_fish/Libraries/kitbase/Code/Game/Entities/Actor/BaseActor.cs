@@ -3,7 +3,7 @@ namespace GameFish;
 /// <summary>
 /// Something with physics and an <see cref="ActorModel"/> that can take damage.
 /// </summary>
-public partial class Actor : PhysicsEntity
+public partial class BaseActor : PhysicsEntity
 {
     public const string FEATURE_ACTOR = "🎭 Actor";
 

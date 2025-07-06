@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class Entity : ITransform
+partial class BaseEntity : ITransform
 {
     public Vector3 GetPosition() => WorldPosition;
     public Rotation GetRotation() => WorldRotation;

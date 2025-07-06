@@ -3,7 +3,7 @@ namespace GameFish;
 /// <summary>
 /// The most basic form of a physical object that can separately exist.
 /// </summary>
-public partial class Entity : Component, ITransform, IHealth
+public partial class BaseEntity : Component, ITransform, IHealth
 {
 	public const string FEATURE_ENTITY = "📦 Entity";
 	public const string FEATURE_NPC = "🤖 NPC";

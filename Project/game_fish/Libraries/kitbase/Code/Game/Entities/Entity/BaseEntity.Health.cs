@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class Entity
+partial class BaseEntity
 {
     [Sync]
     [Property, Feature( IHealth.FEATURE )]

@@ -20,14 +20,9 @@
         "__enabled": true,
         "Health": 100,
         "IsAlive": false,
-        "IsDestructible": true,
+        "IsDestructible": false,
         "MaxHealth": 100,
-        "Model": {
-          "_type": "component",
-          "component_id": "b6d83571-0158-4a0b-936c-8786d26d6314",
-          "go": "77ffd783-71f9-45f3-9f18-c9bd791a0356",
-          "component_type": "ActorCitizenModel"
-        },
+        "Model": null,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -96,7 +91,7 @@
         "RunSpeed": 320,
         "ShowColliderComponents": true,
         "ShowRigidbodyComponent": true,
-        "ThirdPerson": true,
+        "ThirdPerson": false,
         "ToggleCameraModeButton": "view",
         "UseAnimatorControls": true,
         "UseButton": "use",
@@ -198,12 +193,6 @@
             "__guid": "b6d83571-0158-4a0b-936c-8786d26d6314",
             "__enabled": true,
             "BodyWeight": 1,
-            "Clothing": [
-              "models/citizen_clothes/body/human03.clothing",
-              "models/citizen_clothes/full_outfit/pirate_outfit/pirate_outfit.clothing",
-              "models/citizen_clothes/hat/bandana_mask/bandana_mask.clothing",
-              "models/citizen_clothes/hair/hair_tied_dreads/hair_tied_dreads.clothing"
-            ],
             "EyeSource": null,
             "EyesWeight": 1,
             "HeadWeight": 1,
@@ -226,14 +215,69 @@
               "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
               "component_type": "ModelPhysics"
             },
-            "SkinnedModel": {
+            "SkinRenderer": {
               "_type": "component",
               "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
               "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
               "component_type": "SkinnedModelRenderer"
+            }
+          },
+          {
+            "__type": "GameFish.CitizenOutfitter",
+            "__guid": "469feee4-1f79-4aa8-9106-c4f007bedffb",
+            "__enabled": true,
+            "Default": {
+              "Clothing": [
+                {
+                  "IsValid": true,
+                  "Clothing": "models/citizen_clothes/hair/hair_bobcut/hair_bobcut.clothing",
+                  "Tint": 0,
+                  "HasOffset": false,
+                  "Transform": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "Bone": null
+                },
+                {
+                  "IsValid": true,
+                  "Clothing": "models/citizen_clothes/full_outfit/medieval_armour/medieval_armour.clothing",
+                  "Tint": null,
+                  "HasOffset": false,
+                  "Transform": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "Bone": null
+                },
+                {
+                  "IsValid": true,
+                  "Clothing": "models/citizen_clothes/hair/eyebrows_bushy/eyebrows_bushy.clothing",
+                  "Tint": 0.3,
+                  "HasOffset": false,
+                  "Transform": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "Bone": null
+                }
+              ],
+              "Human": null,
+              "Height": null
             },
-            "UseCustomClothing": true,
-            "UseLocalClothing": false
+            "EditorAvatar": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "PreventAvatarSlots": 0,
+            "UseAvatar": true,
+            "UseDefault": true
           }
         ],
         "Children": []
@@ -286,7 +330,7 @@
             "__guid": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
             "__enabled": true,
             "AnimationGraph": null,
-            "BodyGroups": 65,
+            "BodyGroups": 1,
             "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
@@ -327,10 +371,10 @@
         ],
         "Children": [
           {
-            "__guid": "0514c128-6686-4cb0-a153-3f3d45f18df7",
+            "__guid": "02fea485-c6b8-47c7-ba89-05880b785bb9",
             "__version": 1,
             "Flags": 0,
-            "Name": "Clothing - pirate_outfit",
+            "Name": "Clothing - hair_bobcut",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -343,7 +387,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "d19e7328-af11-4ca5-b741-f60e79230fb3",
+                "__guid": "0640287b-786f-467e-b81e-7e00c80757df",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -358,7 +402,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+                "Model": "models/citizen_clothes/hair/hair_bobcut/models/hair_bobcut.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -393,10 +437,10 @@
             "Children": []
           },
           {
-            "__guid": "a252fb1c-b9f8-4750-854a-832d0e609281",
+            "__guid": "60a35881-2669-4794-b609-b67355493e1b",
             "__version": 1,
             "Flags": 0,
-            "Name": "Clothing - bandana_mask",
+            "Name": "Clothing - medieval_armour",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -409,7 +453,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "7f42ee1e-dc9a-4a92-8c71-e9e3161eaed0",
+                "__guid": "402f40c9-9864-485b-9350-e57d797e1c13",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -424,7 +468,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/hat/bandana_mask/models/bandana_mask.vmdl",
+                "Model": "models/citizen_clothes/full_outfit/medieval_armour/models/medieval_armour.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -459,10 +503,10 @@
             "Children": []
           },
           {
-            "__guid": "db88267c-af55-4fd7-89c2-bc13394253f4",
+            "__guid": "0c3697a9-e8be-4aed-b796-7047337f134a",
             "__version": 1,
             "Flags": 0,
-            "Name": "Clothing - hair_tied_dreads",
+            "Name": "Clothing - eyebrows_bushy",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -475,7 +519,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "3a4b8a43-ee53-402c-a73b-47301df91ce6",
+                "__guid": "434625df-206a-4151-8d6d-7e9ef0283480",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -490,7 +534,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/hair/hair_tied_dreads/models/hair_tied_dreads.vmdl",
+                "Model": "models/citizen_clothes/hair/eyebrows_bushy/models/eyebrows_bushy.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -518,7 +562,7 @@
                   "Looping": true,
                   "Blending": false
                 },
-                "Tint": "0.15801,0.11214,0.07938,1",
+                "Tint": "0.73272,0.56573,0.44916,1",
                 "UseAnimGraph": true
               }
             ],

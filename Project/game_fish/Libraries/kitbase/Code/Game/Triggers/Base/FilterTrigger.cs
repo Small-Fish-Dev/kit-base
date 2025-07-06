@@ -54,7 +54,7 @@ public partial class FilterTrigger : BaseTrigger
 	[Order( ORDER_FILTER_TAGS )]
 	[ShowIf( nameof( FilterTags ), true )]
 	[Property, Group( GROUP_FILTER_TAGS )]
-	public TagFilter IncludeTags { get; set; } = new() { Enabled = true, Tags = [Entity.TAG_PLAYER] };
+	public TagFilter IncludeTags { get; set; } = new() { Enabled = true, Tags = [BaseEntity.TAG_PLAYER] };
 
 	/// <summary>
 	/// An object with any of these tags are always ignored. <br />

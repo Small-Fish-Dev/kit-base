@@ -2,7 +2,7 @@ using System;
 
 namespace GameFish;
 
-public partial class ActorCitizenModel : ActorSkinnedModel
+partial class ActorCitizenModel
 {
 	/// <summary> Where are the eyes of our character? </summary>
 	[Property] public GameObject EyeSource { get; set; }
@@ -35,7 +35,7 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 
 	protected override void OnUpdate()
 	{
-		if ( !SkinnedModel.IsValid() )
+		if ( !SkinRenderer.IsValid() )
 			return;
 
 		if ( LookAt.IsValid() && LookAtEnabled )
@@ -48,35 +48,35 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 
 		if ( Height.HasValue )
 		{
-			SkinnedModel.Set( "scale_height", Height.Value );
+			SkinRenderer.Set( "scale_height", Height.Value );
 		}
 
-		if ( IkLeftHand.IsValid() && IkLeftHand.Active ) SkinnedModel.SetIk( "hand_left", IkLeftHand.WorldTransform );
-		else SkinnedModel.ClearIk( "hand_left" );
+		if ( IkLeftHand.IsValid() && IkLeftHand.Active ) SkinRenderer.SetIk( "hand_left", IkLeftHand.WorldTransform );
+		else SkinRenderer.ClearIk( "hand_left" );
 
-		if ( IkRightHand.IsValid() && IkRightHand.Active ) SkinnedModel.SetIk( "hand_right", IkRightHand.WorldTransform );
-		else SkinnedModel.ClearIk( "hand_right" );
+		if ( IkRightHand.IsValid() && IkRightHand.Active ) SkinRenderer.SetIk( "hand_right", IkRightHand.WorldTransform );
+		else SkinRenderer.ClearIk( "hand_right" );
 
-		if ( IkLeftFoot.IsValid() && IkLeftFoot.Active ) SkinnedModel.SetIk( "foot_left", IkLeftFoot.WorldTransform );
-		else SkinnedModel.ClearIk( "foot_left" );
+		if ( IkLeftFoot.IsValid() && IkLeftFoot.Active ) SkinRenderer.SetIk( "foot_left", IkLeftFoot.WorldTransform );
+		else SkinRenderer.ClearIk( "foot_left" );
 
-		if ( IkRightFoot.IsValid() && IkRightFoot.Active ) SkinnedModel.SetIk( "foot_right", IkRightFoot.WorldTransform );
-		else SkinnedModel.ClearIk( "foot_right" );
+		if ( IkRightFoot.IsValid() && IkRightFoot.Active ) SkinRenderer.SetIk( "foot_right", IkRightFoot.WorldTransform );
+		else SkinRenderer.ClearIk( "foot_right" );
 	}
 
 	public void ProceduralHitReaction( DamageInfo info, float damageScale = 1.0f, Vector3 force = default )
 	{
 		var boneId = info.Hitbox?.Bone?.Index ?? 0;
-		var bone = SkinnedModel.GetBoneObject( boneId );
+		var bone = SkinRenderer.GetBoneObject( boneId );
 
 		var localToBone = bone.LocalPosition;
 		if ( localToBone == Vector3.Zero ) localToBone = Vector3.One;
 
-		SkinnedModel.Set( "hit", true );
-		SkinnedModel.Set( "hit_bone", boneId );
-		SkinnedModel.Set( "hit_offset", localToBone );
-		SkinnedModel.Set( "hit_direction", force.Normal );
-		SkinnedModel.Set( "hit_strength", (force.Length / 1000.0f) * damageScale );
+		SkinRenderer.Set( "hit", true );
+		SkinRenderer.Set( "hit_bone", boneId );
+		SkinRenderer.Set( "hit_offset", localToBone );
+		SkinRenderer.Set( "hit_direction", force.Normal );
+		SkinRenderer.Set( "hit_strength", (force.Length / 1000.0f) * damageScale );
 	}
 
 	/// <summary> The transform of the eyes, in world space. This is worked out from EyeSource is it's set. </summary>
@@ -94,26 +94,26 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	/// <summary> Have the player look at this point in the world </summary>
 	public void WithLook( Vector3 lookDirection, float eyesWeight = 1.0f, float headWeight = 1.0f, float bodyWeight = 1.0f )
 	{
-		SkinnedModel.SetLookDirection( "aim_eyes", lookDirection, eyesWeight );
-		SkinnedModel.SetLookDirection( "aim_head", lookDirection, headWeight );
-		SkinnedModel.SetLookDirection( "aim_body", lookDirection, bodyWeight );
+		SkinRenderer.SetLookDirection( "aim_eyes", lookDirection, eyesWeight );
+		SkinRenderer.SetLookDirection( "aim_head", lookDirection, headWeight );
+		SkinRenderer.SetLookDirection( "aim_body", lookDirection, bodyWeight );
 	}
 
 	/// <summary> Have the player animate moving with a set velocity (this doesn't move them! Your character controller is responsible for that) </summary>
 	public void WithVelocity( Vector3 Velocity )
 	{
 		var dir = Velocity;
-		var forward = SkinnedModel.WorldRotation.Forward.Dot( dir );
-		var sideward = SkinnedModel.WorldRotation.Right.Dot( dir );
+		var forward = SkinRenderer.WorldRotation.Forward.Dot( dir );
+		var sideward = SkinRenderer.WorldRotation.Right.Dot( dir );
 
 		var angle = MathF.Atan2( sideward, forward ).RadianToDegree().NormalizeDegrees();
 
-		SkinnedModel.Set( "move_direction", angle );
-		SkinnedModel.Set( "move_speed", Velocity.Length );
-		SkinnedModel.Set( "move_groundspeed", Velocity.WithZ( 0 ).Length );
-		SkinnedModel.Set( "move_y", sideward );
-		SkinnedModel.Set( "move_x", forward );
-		SkinnedModel.Set( "move_z", Velocity.z );
+		SkinRenderer.Set( "move_direction", angle );
+		SkinRenderer.Set( "move_speed", Velocity.Length );
+		SkinRenderer.Set( "move_groundspeed", Velocity.WithZ( 0 ).Length );
+		SkinRenderer.Set( "move_y", sideward );
+		SkinRenderer.Set( "move_x", forward );
+		SkinRenderer.Set( "move_z", Velocity.z );
 	}
 
 	/// <summary>
@@ -123,17 +123,17 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	public void WithWishVelocity( Vector3 Velocity )
 	{
 		var dir = Velocity;
-		var forward = SkinnedModel.WorldRotation.Forward.Dot( dir );
-		var sideward = SkinnedModel.WorldRotation.Right.Dot( dir );
+		var forward = SkinRenderer.WorldRotation.Forward.Dot( dir );
+		var sideward = SkinRenderer.WorldRotation.Right.Dot( dir );
 
 		var angle = MathF.Atan2( sideward, forward ).RadianToDegree().NormalizeDegrees();
 
-		SkinnedModel.Set( "wish_direction", angle );
-		SkinnedModel.Set( "wish_speed", Velocity.Length );
-		SkinnedModel.Set( "wish_groundspeed", Velocity.WithZ( 0 ).Length );
-		SkinnedModel.Set( "wish_y", sideward );
-		SkinnedModel.Set( "wish_x", forward );
-		SkinnedModel.Set( "wish_z", Velocity.z );
+		SkinRenderer.Set( "wish_direction", angle );
+		SkinRenderer.Set( "wish_speed", Velocity.Length );
+		SkinRenderer.Set( "wish_groundspeed", Velocity.WithZ( 0 ).Length );
+		SkinRenderer.Set( "wish_y", sideward );
+		SkinRenderer.Set( "wish_x", forward );
+		SkinRenderer.Set( "wish_z", Velocity.z );
 	}
 
 	/// <summary>
@@ -143,34 +143,34 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	{
 		set
 		{
-			value = SkinnedModel.WorldRotation.Inverse * value;
+			value = SkinRenderer.WorldRotation.Inverse * value;
 			var ang = value.Angles();
 
-			SkinnedModel.Set( "aim_body_pitch", ang.pitch );
-			SkinnedModel.Set( "aim_body_yaw", ang.yaw );
+			SkinRenderer.Set( "aim_body_pitch", ang.pitch );
+			SkinRenderer.Set( "aim_body_yaw", ang.yaw );
 		}
 	}
 
 	/// <summary> The weight of the aim angle, but specifically for the Citizen's eyes. </summary>
 	public float AimEyesWeight
 	{
-		get => SkinnedModel.GetFloat( "aim_eyes_weight" );
-		set => SkinnedModel.Set( "aim_eyes_weight", value );
+		get => SkinRenderer.GetFloat( "aim_eyes_weight" );
+		set => SkinRenderer.Set( "aim_eyes_weight", value );
 	}
 
 	/// <summary> The weight of the aim angle, but specifically for the Citizen's head. </summary>
 	public float AimHeadWeight
 	{
-		get => SkinnedModel.GetFloat( "aim_head_weight" );
-		set => SkinnedModel.Set( "aim_head_weight", value );
+		get => SkinRenderer.GetFloat( "aim_head_weight" );
+		set => SkinRenderer.Set( "aim_head_weight", value );
 	}
 
 
 	/// <summary> The weight of the aim angle, but specifically for the Citizen's body. </summary>
 	public float AimBodyWeight
 	{
-		get => SkinnedModel.GetFloat( "aim_body_weight" );
-		set => SkinnedModel.Set( "aim_body_weight", value );
+		get => SkinRenderer.GetFloat( "aim_body_weight" );
+		set => SkinRenderer.Set( "aim_body_weight", value );
 	}
 
 	/// <summary>
@@ -179,64 +179,64 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	/// </summary>
 	public float MoveRotationSpeed
 	{
-		get => SkinnedModel.GetFloat( "move_rotationspeed" );
-		set => SkinnedModel.Set( "move_rotationspeed", value );
+		get => SkinRenderer.GetFloat( "move_rotationspeed" );
+		set => SkinRenderer.Set( "move_rotationspeed", value );
 	}
 
 	[Obsolete( "Use MoveRotationSpeed" )]
 	public float FootShuffle
 	{
-		get => SkinnedModel.GetFloat( "move_shuffle" );
-		set => SkinnedModel.Set( "move_shuffle", value );
+		get => SkinRenderer.GetFloat( "move_shuffle" );
+		set => SkinRenderer.Set( "move_shuffle", value );
 	}
 
 	/// <summary> The scale of being ducked (crouched) (0 - 1) </summary>
 	public float DuckLevel
 	{
-		get => SkinnedModel.GetFloat( "duck" );
-		set => SkinnedModel.Set( "duck", value );
+		get => SkinRenderer.GetFloat( "duck" );
+		set => SkinRenderer.Set( "duck", value );
 	}
 
 	/// <summary> How loud are we talking? </summary>
 	public float VoiceLevel
 	{
-		get => SkinnedModel.GetFloat( "voice" );
-		set => SkinnedModel.Set( "voice", value );
+		get => SkinRenderer.GetFloat( "voice" );
+		set => SkinRenderer.Set( "voice", value );
 	}
 
 	/// <summary> Are we sitting down? </summary>
 	public bool IsSitting
 	{
-		get => SkinnedModel.GetBool( "b_sit" );
-		set => SkinnedModel.Set( "b_sit", value );
+		get => SkinRenderer.GetBool( "b_sit" );
+		set => SkinRenderer.Set( "b_sit", value );
 	}
 
 	/// <summary> Are we on the ground? </summary>
 	public bool IsGrounded
 	{
-		get => SkinnedModel.GetBool( "b_grounded" );
-		set => SkinnedModel.Set( "b_grounded", value );
+		get => SkinRenderer.GetBool( "b_grounded" );
+		set => SkinRenderer.Set( "b_grounded", value );
 	}
 
 	/// <summary> Are we swimming? </summary>
 	public bool IsSwimming
 	{
-		get => SkinnedModel.GetBool( "b_swim" );
-		set => SkinnedModel.Set( "b_swim", value );
+		get => SkinRenderer.GetBool( "b_swim" );
+		set => SkinRenderer.Set( "b_swim", value );
 	}
 
 	/// <summary> Are we climbing? </summary>
 	public bool IsClimbing
 	{
-		get => SkinnedModel.GetBool( "b_climbing" );
-		set => SkinnedModel.Set( "b_climbing", value );
+		get => SkinRenderer.GetBool( "b_climbing" );
+		set => SkinRenderer.Set( "b_climbing", value );
 	}
 
 	/// <summary> Are we noclipping? </summary>
 	public bool IsNoclipping
 	{
-		get => SkinnedModel.GetBool( "b_noclip" );
-		set => SkinnedModel.Set( "b_noclip", value );
+		get => SkinRenderer.GetBool( "b_noclip" );
+		set => SkinRenderer.Set( "b_noclip", value );
 	}
 
 	/// <summary>
@@ -244,8 +244,8 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	/// </summary>
 	public bool IsWeaponLowered
 	{
-		get => SkinnedModel.GetBool( "b_weapon_lower" );
-		set => SkinnedModel.Set( "b_weapon_lower", value );
+		get => SkinRenderer.GetBool( "b_weapon_lower" );
+		set => SkinRenderer.Set( "b_weapon_lower", value );
 	}
 
 	public enum HoldTypes
@@ -263,8 +263,8 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	/// <summary> What kind of weapon are we holding? </summary>
 	public HoldTypes HoldType
 	{
-		get => (HoldTypes)SkinnedModel.GetInt( "holdtype" );
-		set => SkinnedModel.Set( "holdtype", (int)value );
+		get => (HoldTypes)SkinRenderer.GetInt( "holdtype" );
+		set => SkinRenderer.Set( "holdtype", (int)value );
 	}
 
 	public enum Hand
@@ -279,20 +279,20 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	/// </summary>
 	public Hand Handedness
 	{
-		get => (Hand)SkinnedModel.GetInt( "holdtype_handedness" );
-		set => SkinnedModel.Set( "holdtype_handedness", (int)value );
+		get => (Hand)SkinRenderer.GetInt( "holdtype_handedness" );
+		set => SkinRenderer.Set( "holdtype_handedness", (int)value );
 	}
 
 	/// <summary> Triggers a jump animation. </summary>
 	public void TriggerJump()
 	{
-		SkinnedModel.Set( "b_jump", true );
+		SkinRenderer.Set( "b_jump", true );
 	}
 
 	/// <summary> Triggers a weapon deploy animation. </summary>
 	public void TriggerDeploy()
 	{
-		SkinnedModel.Set( "b_deploy", true );
+		SkinRenderer.Set( "b_deploy", true );
 	}
 
 	public enum MoveStyles
@@ -305,8 +305,8 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	/// <summary> We can force the model to walk or run, or let it decide based on the speed. </summary>
 	public MoveStyles MoveStyle
 	{
-		get => (MoveStyles)SkinnedModel.GetInt( "move_style" );
-		set => SkinnedModel.Set( "move_style", (int)value );
+		get => (MoveStyles)SkinRenderer.GetInt( "move_style" );
+		set => SkinRenderer.Set( "move_style", (int)value );
 	}
 
 	public enum SpecialMoveStyle
@@ -325,8 +325,8 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	/// </summary>
 	public SpecialMoveStyle SpecialMove
 	{
-		get => (SpecialMoveStyle)SkinnedModel.GetInt( "special_movement_states" );
-		set => SkinnedModel.Set( "special_movement_states", (int)value );
+		get => (SpecialMoveStyle)SkinRenderer.GetInt( "special_movement_states" );
+		set => SkinRenderer.Set( "special_movement_states", (int)value );
 	}
 
 	public enum SittingStyle
@@ -339,21 +339,21 @@ public partial class ActorCitizenModel : ActorSkinnedModel
 	/// <summary> How are we sitting down? </summary>
 	public SittingStyle Sitting
 	{
-		get => (SittingStyle)SkinnedModel.GetInt( "sit" );
-		set => SkinnedModel.Set( "sit", (int)value );
+		get => (SittingStyle)SkinRenderer.GetInt( "sit" );
+		set => SkinRenderer.Set( "sit", (int)value );
 	}
 
 	/// <summary> How far up are we sitting down from the floor? </summary>
 	public float SittingOffsetHeight
 	{
-		get => SkinnedModel.GetFloat( "sit_offset_height" );
-		set => SkinnedModel.Set( "sit_offset_height", value );
+		get => SkinRenderer.GetFloat( "sit_offset_height" );
+		set => SkinRenderer.Set( "sit_offset_height", value );
 	}
 
 	/// <summary> From 0-1, how much are we actually sitting down. </summary>
 	public float SittingPose
 	{
-		get => SkinnedModel.GetFloat( "sit_pose" );
-		set => SkinnedModel.Set( "sit_pose", value );
+		get => SkinRenderer.GetFloat( "sit_pose" );
+		set => SkinRenderer.Set( "sit_pose", value );
 	}
 }
