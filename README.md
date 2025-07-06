@@ -1,5 +1,11 @@
 # Base Kit
 
+### Progress
+
+It ain't done yet, but it's got some gems already. Take a peek.
+
+If you like what you see then remember: it's all MIT, just pinky promise to let us know you used it.
+
 ### What?
 
 The fundamental systems/abstractions used in our kits.
