@@ -5,12 +5,12 @@ using Microsoft.CSharp.RuntimeBinder;
 namespace GameFish;
 
 /// <summary>
-/// A trigger that affects the momentum of objects. <br />
+/// A trigger that affects the velocity of objects. <br />
+/// Can push, spin and/or slow physics objects down. <br />
 /// Capable of creating, updating and previewing its collision.
 /// <code> trigger_push </code> <code> trigger_catapult </code>
 /// </summary>
 [Icon( "air" )]
-[Title( "Push Trigger" )]
 public partial class VelocityTrigger : FilterTrigger
 {
 	public enum VelocityMethod
