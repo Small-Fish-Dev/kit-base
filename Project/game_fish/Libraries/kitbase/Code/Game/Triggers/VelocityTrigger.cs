@@ -11,12 +11,12 @@ namespace GameFish;
 /// <code> trigger_push </code> <code> trigger_catapult </code>
 /// </summary>
 [Icon( "air" )]
-public partial class VelocityTrigger : FilterTrigger
+public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 {
 	public enum VelocityMethod
 	{
 		/// <summary>
-		/// Doesn't apply any force.
+		/// No force of this type is applied.
 		/// </summary>
 		None,
 
@@ -130,7 +130,32 @@ public partial class VelocityTrigger : FilterTrigger
 
 	public Rotation DefaultRotation { get; } = Rotation.Identity;
 
-	public override Color GizmoColor { get; } = Color.Cyan.Desaturate( 0.5f );
+	public override Color GizmoColor { get; } = Color.Cyan.LerpTo( Color.Green, 0.35f ).Desaturate( 0.5f );
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		if ( this.InGame() && !DebugGizmos )
+			return;
+
+		// Linear velocity helper arrow.
+		if ( LinearMethod is VelocityMethod.None || LinearRelation is VelocityRelation.Object )
+			return;
+
+		Vector3 center = Collider switch
+		{
+			ColliderType.Manual => default,
+			ColliderType.Box => BoxSize.Center,
+			ColliderType.Sphere => Sphere?.Center ?? default,
+			_ => default
+		};
+
+		var r = GetForceRotation( null, LinearRelation );
+		var v = r * LinearVelocity.Normal * 64f;
+
+		this.DrawArrow( center, center + v, GizmoColor, tWorld: new( WorldPosition ) );
+	}
 
 	protected override void OnFixedUpdate()
 	{
@@ -158,6 +183,15 @@ public partial class VelocityTrigger : FilterTrigger
 			AddVelocity( obj, GetLinearForce( rb, instant: true ), GetAngularForce( rb, instant: true ) );
 	}
 
+	protected virtual Rotation GetForceRotation( Rigidbody rb, in VelocityRelation relEnum )
+		=> relEnum switch
+		{
+			VelocityRelation.Absolute => DefaultRotation,
+			VelocityRelation.Trigger => WorldRotation,
+			VelocityRelation.Object => rb.IsValid() ? rb.WorldRotation : DefaultRotation,
+			_ => DefaultRotation
+		};
+
 	protected virtual Vector3 GetLinearForce( Rigidbody rb, in bool instant )
 	{
 		if ( !Scene.IsValid() || !rb.IsValid() )
@@ -169,25 +203,22 @@ public partial class VelocityTrigger : FilterTrigger
 		{
 			vel = default;
 		}
-		else if ( instant && LinearMethod is VelocityMethod.Continuous )
+		else if ( instant != LinearMethod is VelocityMethod.Instantaneous )
 		{
 			vel = default;
 		}
 		else
 		{
-			var r = LinearRelation switch
-			{
-				VelocityRelation.Absolute => DefaultRotation,
-				VelocityRelation.Trigger => WorldRotation,
-				VelocityRelation.Object => rb.WorldRotation,
-				_ => DefaultRotation
-			};
+			var r = GetForceRotation( rb, LinearRelation );
 
 			if ( instant )
 				vel = r * LinearVelocity;
 			else
 				vel = r * LinearVelocity * Scene.FixedDelta;
 		}
+
+		if ( instant )
+			this.Log( vel );
 
 		if ( !instant && Drag && LinearDrag != 0f )
 			vel -= rb.Velocity.ClampLength( LinearDrag * Scene.FixedDelta );
@@ -206,19 +237,13 @@ public partial class VelocityTrigger : FilterTrigger
 		{
 			vel = default;
 		}
-		else if ( instant && AngularMethod is VelocityMethod.Continuous )
+		else if ( instant != AngularMethod is VelocityMethod.Instantaneous )
 		{
 			vel = default;
 		}
 		else
 		{
-			var r = AngularRelation switch
-			{
-				VelocityRelation.Absolute => DefaultRotation,
-				VelocityRelation.Trigger => WorldRotation,
-				VelocityRelation.Object => rb.WorldRotation,
-				_ => DefaultRotation
-			};
+			var r = GetForceRotation( rb, AngularRelation );
 
 			if ( instant )
 				vel = r * AngularVelocity;
