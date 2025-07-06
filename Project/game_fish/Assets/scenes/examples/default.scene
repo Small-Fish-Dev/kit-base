@@ -517,7 +517,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "9465bcdf-2db7-42d9-af35-be7526581b23"
+              "IdValue": "9ee9bee5-3621-46e7-9c18-6ef92457d09d"
             },
             "Parent": {
               "Type": "GameObject",
@@ -527,7 +527,7 @@
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "9465bcdf-2db7-42d9-af35-be7526581b23",
+              "__guid": "9ee9bee5-3621-46e7-9c18-6ef92457d09d",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - hair_bobcut",
@@ -547,18 +547,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "5a9653b4-73e4-4109-8218-1e2295d381e1"
+              "IdValue": "45ffbcf4-4d87-4696-a445-79c892f2a076"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "9465bcdf-2db7-42d9-af35-be7526581b23"
+              "IdValue": "9ee9bee5-3621-46e7-9c18-6ef92457d09d"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "5a9653b4-73e4-4109-8218-1e2295d381e1",
+              "__guid": "45ffbcf4-4d87-4696-a445-79c892f2a076",
               "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
@@ -608,7 +608,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "d760766c-2303-43e8-b62f-8386026999c3"
+              "IdValue": "b410de3a-cc44-4459-a026-ede1ac17ef84"
             },
             "Parent": {
               "Type": "GameObject",
@@ -616,12 +616,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "9465bcdf-2db7-42d9-af35-be7526581b23"
+              "IdValue": "9ee9bee5-3621-46e7-9c18-6ef92457d09d"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "d760766c-2303-43e8-b62f-8386026999c3",
+              "__guid": "b410de3a-cc44-4459-a026-ede1ac17ef84",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - medieval_armour",
@@ -641,18 +641,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "568223ac-f7b8-4d5b-b953-8f7b5a5cbb87"
+              "IdValue": "38cf065e-16b7-4bca-a8a3-8cbcb0241fd7"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "d760766c-2303-43e8-b62f-8386026999c3"
+              "IdValue": "b410de3a-cc44-4459-a026-ede1ac17ef84"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "568223ac-f7b8-4d5b-b953-8f7b5a5cbb87",
+              "__guid": "38cf065e-16b7-4bca-a8a3-8cbcb0241fd7",
               "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
@@ -702,7 +702,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "a7711afd-839a-486a-ad17-c86a9c209e39"
+              "IdValue": "e9303632-0467-4e24-8fa4-cbb365aacf12"
             },
             "Parent": {
               "Type": "GameObject",
@@ -710,12 +710,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "d760766c-2303-43e8-b62f-8386026999c3"
+              "IdValue": "b410de3a-cc44-4459-a026-ede1ac17ef84"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "a7711afd-839a-486a-ad17-c86a9c209e39",
+              "__guid": "e9303632-0467-4e24-8fa4-cbb365aacf12",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - eyebrows_bushy",
@@ -735,18 +735,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "8cf45a7e-d45e-4f7d-993b-d98625b18e6b"
+              "IdValue": "fd7ee17e-4dbb-4e96-9bc5-660b5e35753b"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "a7711afd-839a-486a-ad17-c86a9c209e39"
+              "IdValue": "e9303632-0467-4e24-8fa4-cbb365aacf12"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "8cf45a7e-d45e-4f7d-993b-d98625b18e6b",
+              "__guid": "fd7ee17e-4dbb-4e96-9bc5-660b5e35753b",
               "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
@@ -840,38 +840,6 @@
             },
             "Property": "Position",
             "Value": "-480,0,0"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "a0b2aa34-5b07-492c-9275-4dc2e9ff9329"
-            },
-            "Property": "Gravity",
-            "Value": false
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "a0b2aa34-5b07-492c-9275-4dc2e9ff9329"
-            },
-            "Property": "LinearDamping",
-            "Value": 10
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "a0b2aa34-5b07-492c-9275-4dc2e9ff9329"
-            },
-            "Property": "MassCenterOverride",
-            "Value": "0,0,0"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "ecaf68d2-3205-4636-ac23-a3076c510e85"
-            },
-            "Property": "Friction",
-            "Value": 81
           }
         ],
         "MovedObjects": []
@@ -973,7 +941,7 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "OnEmpty": null,
+              "OnEmptied": null,
               "OnEnter": null,
               "OnExit": null,
               "OnFailedFilter": null,
@@ -1053,7 +1021,7 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "OnEmpty": null,
+              "OnEmptied": null,
               "OnEnter": null,
               "OnExit": null,
               "OnFailedFilter": null,
@@ -1137,7 +1105,7 @@
                 "Enabled": true,
                 "Tags": "player"
               },
-              "LinearDrag": 100,
+              "LinearDrag": 10,
               "LinearMethod": "Continuous",
               "LinearRelation": "Absolute",
               "LinearVelocity": "0,0,1000",
@@ -1147,7 +1115,7 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "OnEmpty": null,
+              "OnEmptied": null,
               "OnEnter": null,
               "OnExit": null,
               "OnFailedFilter": null,
@@ -1160,6 +1128,100 @@
               },
               "RequireType": "Sandbox.Rigidbody",
               "SphereRadius": 64
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "703cf664-6fee-4883-8e20-89e405460915",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Push Trigger",
+          "Position": "1152,256,-688",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.15",
+          "Tags": "trigger",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "GameFish.VelocityTrigger",
+              "__guid": "4e8cbf5d-adcc-4965-bcb8-86c9b6720e85",
+              "__enabled": true,
+              "AngularDrag": 100,
+              "AngularMethod": "None",
+              "AngularRelation": "Absolute",
+              "AngularVelocity": "0,0,100",
+              "BoxSize": {
+                "Mins": "-128,-128,-128",
+                "Maxs": "128,128,128"
+              },
+              "Collider": "Box",
+              "DebugGizmos": true,
+              "DebugLogging": false,
+              "Drag": false,
+              "ExcludeTags": {
+                "Enabled": false,
+                "Tags": null
+              },
+              "FilterTags": false,
+              "FilterType": true,
+              "FindMode": "Enabled, InSelf, InAncestors, InDescendants",
+              "FunctionFilter": null,
+              "IncludeTags": {
+                "Enabled": true,
+                "Tags": "player"
+              },
+              "LinearDrag": 10,
+              "LinearMethod": "Instantaneous",
+              "LinearRelation": "Absolute",
+              "LinearVelocity": "0,0,2000",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnEmptied": null,
+              "OnEnter": null,
+              "OnExit": null,
+              "OnFailedFilter": null,
+              "OnFirstEnter": null,
+              "OnInsideFixedUpdate": null,
+              "OnInsideUpdate": null,
+              "RequireTags": {
+                "Enabled": false,
+                "Tags": null
+              },
+              "RequireType": "Sandbox.Rigidbody",
+              "SphereRadius": 64
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "3935204c-69cc-44ff-8345-b910976161e3",
+              "__enabled": false,
+              "Center": "0,0,0",
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "256,256,256",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             }
           ],
           "Children": []
@@ -1196,7 +1258,7 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "OnEmpty": null,
+              "OnEmptied": null,
               "OnEnter": null,
               "OnExit": null,
               "OnFailedFilter": null,
@@ -1264,7 +1326,7 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "OnEmpty": null,
+              "OnEmptied": null,
               "OnEnter": null,
               "OnExit": null,
               "OnFailedFilter": null,
