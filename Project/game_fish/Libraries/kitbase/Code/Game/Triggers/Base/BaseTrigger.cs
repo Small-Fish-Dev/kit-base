@@ -235,8 +235,8 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 			Box.Enabled = !(Scene?.IsEditor ?? true);
 			Box.IsTrigger = true;
 
-			Box.Scale = BoxSize.Size - BoxSize.Center;
-			Box.Center = default;
+			Box.Scale = BoxSize.Size;
+			Box.Center = BoxSize.Mins + BoxSize.Extents;
 		}
 		else if ( Box.IsValid() )
 		{
@@ -350,7 +350,7 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 
 		_ = Collider switch
 		{
-			ColliderType.Box => this.DrawBox( BoxSize.Translate( Box?.Center ?? default ), GizmoColor ),
+			ColliderType.Box => this.DrawBox( BoxSize, GizmoColor ),
 			ColliderType.Sphere => this.DrawSphere( SphereRadius, Sphere?.Center ?? default, GizmoColor ),
 			_ => false
 		};
