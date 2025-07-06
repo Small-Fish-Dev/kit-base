@@ -19,7 +19,7 @@ public interface IVelocity
     public void SetVelocity( in Vector3 vel );
 
     /// <summary>
-    /// Tries to modify the velocity. Lets the object prevent this.
+    /// Tries to modify the velocity. Lets the object modify the result.
     /// </summary>
     /// <returns> If this object allows adding of the velocity. </returns>
     public bool TryModifyVelocity( in Vector3 vel, out Vector3 result )
@@ -37,7 +37,7 @@ public interface IVelocity
     }
 
     /// <summary>
-    /// Tries to modify the velocity. Lets the object prevent this.
+    /// Tries to modify the velocity. Lets the object modify the result.
     /// </summary>
     /// <returns> If this object allows adding of the velocity. </returns>
     public bool TryModifyVelocity( in Vector3 vel )

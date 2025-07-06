@@ -3,6 +3,7 @@ namespace GameFish;
 /// <summary>
 /// A trigger that starts with ladder tag and appropriate collider. <br />
 /// Capable of creating, updating and previewing its collision.
+/// <code> func_ladder </code>
 /// </summary>
 [Icon( "stairs" )]
 [Title( "Ladder" )]
