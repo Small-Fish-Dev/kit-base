@@ -1,12 +1,12 @@
 namespace GameFish;
 
 /// <summary>
-/// A trigger that starts with ladder tag and appropriate collider. <br />
+/// A trigger with the "ladder" tag and appropriate default collider. <br />
+/// You need a player/actor controller of some kind to utilize this. <br />
 /// Capable of creating, updating and previewing its collision.
 /// <code> func_ladder </code>
 /// </summary>
 [Icon( "stairs" )]
-[Title( "Ladder" )]
 public partial class LadderTrigger : BaseTrigger
 {
 	[Property, Group( GROUP_COLLIDER )]
