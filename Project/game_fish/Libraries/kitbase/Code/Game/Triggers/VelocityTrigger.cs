@@ -217,9 +217,6 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 				vel = r * LinearVelocity * Scene.FixedDelta;
 		}
 
-		if ( instant )
-			this.Log( vel );
-
 		if ( !instant && Drag && LinearDrag != 0f )
 			vel -= rb.Velocity.ClampLength( LinearDrag * Scene.FixedDelta );
 
