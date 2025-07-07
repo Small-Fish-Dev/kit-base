@@ -100,10 +100,6 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 	[Property, Group( GROUP_CALLBACK )]
 	public Action<BaseTrigger, GameObject> OnExit { get; set; }
 
-	[Order( ORDER_CALLBACK )]
-	[Property, Group( GROUP_CALLBACK )]
-	public Action<BaseTrigger, GameObject> OnFailedFilter { get; set; }
-
 	/// <summary> A passing object just entered this it was previously empty. </summary>
 	[Order( ORDER_CALLBACK )]
 	[Property, Group( GROUP_CALLBACK )]
@@ -262,26 +258,8 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 
 	public void OnTriggerEnter( GameObject obj )
 	{
-		if ( !PassesFilters( obj ) )
-		{
-			DebugLog( obj + " FAILED the filter " );
-
-			if ( OnFailedFilter is not null )
-			{
-				try
-				{
-					OnFailedFilter.Invoke( this, obj );
-				}
-				catch ( Exception e )
-				{
-					this.Warn( $"OnFailedFilter callback exception: {e}" );
-				}
-			}
-
+		if ( !TestFilters( obj ) )
 			return;
-		}
-
-		DebugLog( obj + " PASSED the filter" );
 
 		OnTouchStart( obj );
 	}
@@ -290,6 +268,20 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 	{
 		if ( obj is not null && (Touching?.Contains( obj ) ?? false) )
 			OnTouchStop( obj );
+	}
+
+	/// <summary>
+	/// Run filtering checks and optional debug logging.
+	/// </summary>
+	protected virtual bool TestFilters( GameObject obj )
+	{
+		return PassesFilters( obj );
+	}
+
+	/// <returns> If the object passes this trigger's filters(if any). </returns>
+	public virtual bool PassesFilters( GameObject obj )
+	{
+		return obj.IsValid();
 	}
 
 	protected virtual void OnTouchStart( GameObject obj )
@@ -327,8 +319,14 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 		if ( Touching is null || Touching.Count <= 0 )
 			OnLastExit( obj );
 
-		// Callback
-		OnExit?.Invoke( this, obj );
+		try
+		{
+			OnExit?.Invoke( this, obj );
+		}
+		catch ( Exception e )
+		{
+			this.Warn( $"{nameof( OnExit )} callback exception: {e}" );
+		}
 	}
 
 	protected virtual void OnFirstEntered( GameObject obj )
@@ -353,12 +351,6 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 		{
 			this.Warn( $"{nameof( OnEmptied )} callback exception: {e}" );
 		}
-	}
-
-	/// <returns> If the object is valid. </returns>
-	protected virtual bool PassesFilters( GameObject obj )
-	{
-		return obj.IsValid();
 	}
 
 	protected override void DrawGizmos()

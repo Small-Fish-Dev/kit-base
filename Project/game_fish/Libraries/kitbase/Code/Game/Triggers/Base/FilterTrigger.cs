@@ -81,10 +81,40 @@ public partial class FilterTrigger : BaseTrigger
 	[Property, Group( GROUP_FILTER_FUNC ), Title( "Passes Filter" )]
 	public Func<BaseTrigger, GameObject, bool> FunctionFilter { get; set; }
 
+	[Order( ORDER_CALLBACK )]
+	[Property, Group( GROUP_CALLBACK )]
+	public Action<BaseTrigger, GameObject> OnFailedFilter { get; set; }
+
 	public override Color GizmoColor { get; } = Color.Green.Desaturate( 0.6f ).Darken( 0.25f );
 
+	protected override bool TestFilters( GameObject obj )
+	{
+		if ( !PassesFilters( obj ) )
+		{
+			DebugLog( obj + " FAILED the filter " );
+
+			if ( OnFailedFilter is not null )
+			{
+				try
+				{
+					OnFailedFilter.Invoke( this, obj );
+				}
+				catch ( Exception e )
+				{
+					this.Warn( $"{nameof( OnFailedFilter )} callback exception: {e}" );
+				}
+			}
+
+			return false;
+		}
+
+		DebugLog( obj + " PASSED the filter" );
+
+		return true;
+	}
+
 	/// <returns> If the object passes this trigger's tag filters(if any) and custom filter(if any). </returns>
-	protected override bool PassesFilters( GameObject obj )
+	public override bool PassesFilters( GameObject obj )
 	{
 		if ( !obj.IsValid() || !base.PassesFilters( obj ) )
 			return false;
