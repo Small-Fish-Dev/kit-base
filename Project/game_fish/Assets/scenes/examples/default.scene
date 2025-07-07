@@ -517,7 +517,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "9ee9bee5-3621-46e7-9c18-6ef92457d09d"
+              "IdValue": "fa7a7738-1bbc-4e6a-8bee-617841b97acb"
             },
             "Parent": {
               "Type": "GameObject",
@@ -527,7 +527,7 @@
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "9ee9bee5-3621-46e7-9c18-6ef92457d09d",
+              "__guid": "fa7a7738-1bbc-4e6a-8bee-617841b97acb",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - hair_bobcut",
@@ -547,18 +547,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "45ffbcf4-4d87-4696-a445-79c892f2a076"
+              "IdValue": "2c0054a8-8161-43a1-81f1-7ded3a4ef2a7"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "9ee9bee5-3621-46e7-9c18-6ef92457d09d"
+              "IdValue": "fa7a7738-1bbc-4e6a-8bee-617841b97acb"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "45ffbcf4-4d87-4696-a445-79c892f2a076",
+              "__guid": "2c0054a8-8161-43a1-81f1-7ded3a4ef2a7",
               "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
@@ -608,7 +608,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "b410de3a-cc44-4459-a026-ede1ac17ef84"
+              "IdValue": "3c278f8a-6259-4fb6-9278-d314155db418"
             },
             "Parent": {
               "Type": "GameObject",
@@ -616,12 +616,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "9ee9bee5-3621-46e7-9c18-6ef92457d09d"
+              "IdValue": "fa7a7738-1bbc-4e6a-8bee-617841b97acb"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "b410de3a-cc44-4459-a026-ede1ac17ef84",
+              "__guid": "3c278f8a-6259-4fb6-9278-d314155db418",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - medieval_armour",
@@ -641,18 +641,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "38cf065e-16b7-4bca-a8a3-8cbcb0241fd7"
+              "IdValue": "745e2b03-66e7-4bf2-b6a0-df55c77c61cc"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "b410de3a-cc44-4459-a026-ede1ac17ef84"
+              "IdValue": "3c278f8a-6259-4fb6-9278-d314155db418"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "38cf065e-16b7-4bca-a8a3-8cbcb0241fd7",
+              "__guid": "745e2b03-66e7-4bf2-b6a0-df55c77c61cc",
               "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
@@ -702,7 +702,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "e9303632-0467-4e24-8fa4-cbb365aacf12"
+              "IdValue": "57f5a565-042e-40a3-9364-b822ab8c6559"
             },
             "Parent": {
               "Type": "GameObject",
@@ -710,12 +710,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "b410de3a-cc44-4459-a026-ede1ac17ef84"
+              "IdValue": "3c278f8a-6259-4fb6-9278-d314155db418"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "e9303632-0467-4e24-8fa4-cbb365aacf12",
+              "__guid": "57f5a565-042e-40a3-9364-b822ab8c6559",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - eyebrows_bushy",
@@ -735,18 +735,18 @@
           {
             "Id": {
               "Type": "Component",
-              "IdValue": "fd7ee17e-4dbb-4e96-9bc5-660b5e35753b"
+              "IdValue": "7750be7d-e3cb-487b-85bc-95c020607f78"
             },
             "Parent": {
               "Type": "GameObject",
-              "IdValue": "e9303632-0467-4e24-8fa4-cbb365aacf12"
+              "IdValue": "57f5a565-042e-40a3-9364-b822ab8c6559"
             },
             "PreviousElement": null,
             "ContainerProperty": "Components",
             "IsContainerArray": true,
             "Data": {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "fd7ee17e-4dbb-4e96-9bc5-660b5e35753b",
+              "__guid": "7750be7d-e3cb-487b-85bc-95c020607f78",
               "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
@@ -944,7 +944,6 @@
               "OnEmptied": null,
               "OnEnter": null,
               "OnExit": null,
-              "OnFailedFilter": null,
               "OnFirstEnter": null,
               "OnInsideFixedUpdate": null,
               "OnInsideUpdate": null,
@@ -1028,10 +1027,6 @@
               "OnFirstEnter": null,
               "OnInsideFixedUpdate": null,
               "OnInsideUpdate": null,
-              "RequireTags": {
-                "Enabled": false,
-                "Tags": null
-              },
               "RequireType": "GameFish.BasePlayer",
               "SphereRadius": 64
             }
@@ -1098,7 +1093,7 @@
                 "Tags": null
               },
               "FilterTags": false,
-              "FilterType": true,
+              "FilterType": false,
               "FindMode": "Enabled, InSelf, InAncestors, InDescendants",
               "FunctionFilter": null,
               "IncludeTags": {
@@ -1122,10 +1117,6 @@
               "OnFirstEnter": null,
               "OnInsideFixedUpdate": null,
               "OnInsideUpdate": null,
-              "RequireTags": {
-                "Enabled": false,
-                "Tags": null
-              },
               "RequireType": "Sandbox.Rigidbody",
               "SphereRadius": 64
             }
@@ -1192,10 +1183,6 @@
               "OnFirstEnter": null,
               "OnInsideFixedUpdate": null,
               "OnInsideUpdate": null,
-              "RequireTags": {
-                "Enabled": false,
-                "Tags": null
-              },
               "RequireType": "Sandbox.Rigidbody",
               "SphereRadius": 64
             },
@@ -1261,7 +1248,6 @@
               "OnEmptied": null,
               "OnEnter": null,
               "OnExit": null,
-              "OnFailedFilter": null,
               "OnFirstEnter": null,
               "OnInsideFixedUpdate": null,
               "OnInsideUpdate": null,
@@ -1329,7 +1315,6 @@
               "OnEmptied": null,
               "OnEnter": null,
               "OnExit": null,
-              "OnFailedFilter": null,
               "OnFirstEnter": null,
               "OnInsideFixedUpdate": null,
               "OnInsideUpdate": null,
