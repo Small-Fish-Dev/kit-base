@@ -74,15 +74,6 @@ public partial class FilterTrigger : BaseTrigger
 	public TagFilter ExcludeTags { get; set; }
 
 	/// <summary>
-	/// An object must have all of these these tags to trigger this.
-	/// </summary>
-	[Order( ORDER_FILTER_TAGS )]
-	[Feature( FEATURE_FILTERS )]
-	[Property, Group( GROUP_FILTER_TAGS )]
-	[ShowIf( nameof( FilterTags ), true )]
-	public TagFilter RequireTags { get; set; }
-
-	/// <summary>
 	/// An additional, final check you can do in ActionGraph.
 	/// </summary>
 	[Order( ORDER_FILTER_TYPE + 1 )]
@@ -154,10 +145,6 @@ public partial class FilterTrigger : BaseTrigger
 
 		// Exclude
 		if ( ExcludeTags.HasAny( tags ) )
-			return false;
-
-		// Require
-		if ( !tags.HasAll( RequireTags.Tags ?? [] ) )
 			return false;
 
 		return passed;
