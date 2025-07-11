@@ -17,7 +17,7 @@ public static partial class GameFish
 	public static void Log( this Component c, params object[] log )
 	{
 		if ( c is null )
-			Log( "???", log );
+			Log( c?.GetType(), log );
 		else
 			Log( c.ToString(), log );
 	}
@@ -25,7 +25,7 @@ public static partial class GameFish
 	public static void Warn( this Component c, params object[] log )
 	{
 		if ( c is null )
-			Warn( "???", log );
+			Warn( c?.GetType(), log );
 		else
 			Warn( c.ToString(), log );
 	}
