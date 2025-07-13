@@ -257,12 +257,8 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 
 				Vector3 OpposingForce()
 				{
-					var forceNormal = force.Normal;
-					var opposingDir = rb.Velocity.Dot( forceNormal ).Sign();
-					var opposing = rb.Velocity.Forward( forceNormal * opposingDir );
-					var result = vel - opposing;
-
-					result += force;
+					var opposing = rb.Velocity.Forward( -force.Normal );
+					var result = vel - opposing + force;
 
 					return result;
 				}
