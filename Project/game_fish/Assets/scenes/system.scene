@@ -18,6 +18,54 @@
       "Components": [],
       "Children": [
         {
+          "__guid": "3a45319e-ed77-41fc-ac22-c76a76890c2c",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Networking",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": [
+            {
+              "__guid": "82d10356-fd12-42e1-85b4-55efb7a1dd24",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Server",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "GameFish.Server",
+                  "__guid": "097637a4-25b2-4791-af6f-894b98828e85",
+                  "__enabled": true,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "PlayerClientPrefab": "prefabs/net/clients/client_player.prefab"
+                }
+              ],
+              "Children": []
+            }
+          ]
+        },
+        {
           "__guid": "14416ea1-6237-47c3-89dd-a5bc25797ef4",
           "__version": 1,
           "Flags": 0,

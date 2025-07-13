@@ -68,8 +68,8 @@
         "EnablePressing": true,
         "EyeDistanceFromTop": 8,
         "FootstepMixer": {
-          "Name": "unknown",
-          "Id": "00000000-0000-0000-0000-000000000000"
+          "Name": "game",
+          "Id": "1a7d8844-f32a-42ab-bb25-ba44b0c78865"
         },
         "FootstepVolume": 1,
         "HideBodyInFirstPerson": true,
@@ -376,7 +376,7 @@
         ],
         "Children": [
           {
-            "__guid": "6954c763-0854-4844-8d69-c0343810ee8f",
+            "__guid": "866c5a5f-fbba-4819-ad0c-7a37f11f735e",
             "__version": 1,
             "Flags": 0,
             "Name": "Clothing - hair_bobcut",
@@ -392,7 +392,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "17ffd28d-f0f1-4e00-8b78-ed5129c5af5f",
+                "__guid": "fd670d5b-9844-4f66-994e-0c443bb16274",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -442,7 +442,7 @@
             "Children": []
           },
           {
-            "__guid": "7db8fc2e-9a54-449e-a9fb-2dc59186cefe",
+            "__guid": "87aced8e-ffc4-4bb1-a7c5-a6c10cb0eb49",
             "__version": 1,
             "Flags": 0,
             "Name": "Clothing - medieval_armour",
@@ -458,7 +458,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "a8d66d1c-145b-4042-b1d9-d771b4d939d4",
+                "__guid": "15149811-1515-43db-ac5c-5e44d44a7ea2",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -508,7 +508,7 @@
             "Children": []
           },
           {
-            "__guid": "7820cc2f-84ca-4a0d-b597-87d8d078bece",
+            "__guid": "33f3d49a-9be9-4b98-9a3f-a05d5b7aab34",
             "__version": 1,
             "Flags": 0,
             "Name": "Clothing - eyebrows_bushy",
@@ -524,7 +524,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "75dddb2c-422a-4d34-b9c5-0bbdf41457ef",
+                "__guid": "4c3495f4-dfa8-4522-8d02-96b09b187bec",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
