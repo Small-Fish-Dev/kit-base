@@ -56,31 +56,36 @@ public abstract partial class Agent : Component, ISimulate
 		Simulate( Time.Delta );
 	}
 
-	public virtual Pawn.AttemptResult AddPawn( Pawn pawn )
+	/// <summary>
+	/// Called by the host to register an assigned pawn on this agent.
+	/// </summary>
+	public virtual bool AddPawn( Pawn pawn )
 	{
 		if ( !Networking.IsHost )
-			return Pawn.AttemptResult.Failure;
+			return false;
 
 		if ( !this.IsValid() || !Scene.IsValid() || Scene.IsEditor )
-			return Pawn.AttemptResult.Failure;
+			return false;
 
 		if ( !pawn.IsValid() )
-			return Pawn.AttemptResult.Failure;
+			return false;
 
 		if ( IsPlayer && Identity.Type is ClientType.User )
 		{
 			// Must have an active, valid connection.
 			if ( !Connected )
-				return Pawn.AttemptResult.Failure;
+				return false;
 
 			var cn = Connection;
 
 			if ( cn is null )
+			{
 				this.Warn( "had a null connection while taking a pawn" );
+			}
 
 			if ( !pawn.Network.IsOwner )
 				if ( !pawn.Network.AssignOwnership( Connection ) )
-					return Pawn.AttemptResult.Failure;
+					return false;
 		}
 
 		if ( Pawns is null )
@@ -96,7 +101,7 @@ public abstract partial class Agent : Component, ISimulate
 
 		OnGainPawn( pawn );
 
-		return Pawn.AttemptResult.Success;
+		return true;
 	}
 
 	public virtual void RemovePawn( Pawn pawn )
@@ -161,14 +166,14 @@ public abstract partial class Agent : Component, ISimulate
 	/// <summary>
 	/// Sends a request to the host to take a pawn.
 	/// </summary>
-	public Pawn.AttemptResult RequestTakePawn( Pawn pawn )
+	public AttemptStatus RequestTakePawn( Pawn pawn )
 	{
 		if ( !pawn.IsValid() || !pawn.AllowOwnership( this ) )
-			return Pawn.AttemptResult.Failure;
+			return AttemptStatus.Failure;
 
 		RpcRequestTakePawn( pawn );
 
-		return Pawn.AttemptResult.Request;
+		return AttemptStatus.Active;
 	}
 
 	[Rpc.Host( NetFlags.Reliable | NetFlags.OwnerOnly )]
@@ -177,39 +182,42 @@ public abstract partial class Agent : Component, ISimulate
 		TryTakePawn( pawn );
 	}
 
-	public virtual Pawn.AttemptResult TryTakePawn( Pawn pawn )
+	public virtual AttemptStatus TryTakePawn( Pawn pawn )
 	{
-		// Only hosts can process pawn takeover attempts.
-		if ( !Network.IsOwner )
+		AttemptStatus Result( in AttemptStatus result )
 		{
-			RpcRequestTakePawn( pawn );
-			return Pawn.AttemptResult.Request;
+			RpcTryTakePawnHostResponse( pawn, result );
+			return result;
 		}
 
-		if ( !pawn.IsValid() || !pawn.AllowOwnership( this ) )
-			return Pawn.AttemptResult.Failure;
+		// Only hosts can process pawn takeover attempts.
+		if ( !Network.IsOwner )
+			return Result( AttemptStatus.Active );
 
 		if ( !Connected )
-			return Pawn.AttemptResult.Failure;
+			return Result( AttemptStatus.Failure );
+
+		if ( !pawn.IsValid() || !pawn.AllowOwnership( this ) )
+			return Result( AttemptStatus.Failure );
 
 		pawn.Agent = this;
 
-		RpcTryTakePawnHostResponse( pawn, Pawn.AttemptResult.Success );
+		RpcTryTakePawnHostResponse( pawn, AttemptStatus.Success );
 
-		return Pawn.AttemptResult.Success;
+		return AttemptStatus.Success;
 	}
 
 	/// <summary>
 	/// This is the method you want to call so the host can tell the owner what happened.
 	/// </summary>
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
-	protected void RpcTryTakePawnHostResponse( Pawn pawn, Pawn.AttemptResult result )
+	protected void RpcTryTakePawnHostResponse( Pawn pawn, AttemptStatus result )
 	{
 		if ( pawn.IsValid() )
 			OnTryTakePawnResponse( pawn, result );
 	}
 
-	protected virtual void OnTryTakePawnResponse( Pawn pawn, in Pawn.AttemptResult result )
+	protected virtual void OnTryTakePawnResponse( Pawn pawn, in AttemptStatus result )
 	{
 	}
 

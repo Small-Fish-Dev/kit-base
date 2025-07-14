@@ -9,13 +9,6 @@ public abstract partial class Pawn : Component, ISimulate
 {
 	public const string FEATURE_PAWN = "♟️ Pawn";
 
-	public enum AttemptResult
-	{
-		Failure,
-		Request,
-		Success
-	}
-
 	// public override string ToString()
 	// => $"{GetType().ToSimpleString( includeNamespace: false )}|Agent:{Agent?.ToString() ?? "none"}";
 
@@ -83,16 +76,14 @@ public abstract partial class Pawn : Component, ISimulate
 
 		if ( agent.IsValid() )
 		{
-			var result = agent.AddPawn( this );
-
-			if ( result is AttemptResult.Failure )
+			if ( agent.AddPawn( this ) )
+			{
+				OnAdded( old, agent );
+			}
+			else
 			{
 				this.Warn( $"failed to add Pawn:{this} to Agent:{agent}" );
 				Agent = null;
-			}
-			else if ( result is AttemptResult.Success )
-			{
-				OnAdded( old, agent );
 			}
 		}
 	}
