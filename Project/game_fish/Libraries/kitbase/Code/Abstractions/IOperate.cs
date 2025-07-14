@@ -12,9 +12,9 @@ public interface IOperate
 	/// </summary>
 	public bool CanOperate();
 
-	/// <summary> Called during OnUpdate remotely(if allowed). </summary>
+	/// <summary> Called during OnUpdate(if allowed). </summary>
 	public void FrameOperate( in float deltaTime ) { }
 
-	/// <summary> Called during OnFixedUpdate remotely(if allowed). </summary>
+	/// <summary> Called during OnFixedUpdate(if allowed). </summary>
 	public void FixedOperate( in float deltaTime ) { }
 }
