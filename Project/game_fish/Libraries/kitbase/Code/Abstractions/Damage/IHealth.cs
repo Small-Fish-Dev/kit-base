@@ -5,6 +5,7 @@ namespace GameFish;
 public interface IHealth
 {
     public const string FEATURE = "💖 Health";
+	public const string GROUP_VALUES = "Values";
 
     abstract bool IsAlive { get; protected set; }
 

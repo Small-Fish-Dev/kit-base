@@ -12,6 +12,9 @@ public abstract partial class BasePawn : BaseActor
 	// public override string ToString()
 	// => $"{GetType().ToSimpleString( includeNamespace: false )}|Agent:{Agent?.ToString() ?? "none"}";
 
+	/// <summary>
+	/// The agent controlling this pawn. Could be a player or NPC.
+	/// </summary>
 	[Sync( SyncFlags.FromHost )]
 	[Property, Feature( FEATURE_PAWN )]
 	public Agent Agent
