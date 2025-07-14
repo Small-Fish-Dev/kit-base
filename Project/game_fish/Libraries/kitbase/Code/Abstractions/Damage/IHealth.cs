@@ -1,73 +1,103 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace GameFish;
 
 public interface IHealth
 {
-    public const string FEATURE = "💖 Health";
+	public const string FEATURE = "💖 Health";
 	public const string GROUP_VALUES = "Values";
 
-    abstract bool IsAlive { get; protected set; }
+	abstract bool IsAlive { get; set; }
 
-    /// <summary> Is this capable of ever taking damage? </summary>
-    public bool IsDestructible { get; protected set; }
+	/// <summary> Is this capable of ever taking damage? </summary>
+	abstract bool IsDestructible { get; set; }
 
-    public float Health { get; protected set; }
-    public float MaxHealth { get; protected set; }
+	abstract float Health { get; set; }
+	abstract float MaxHealth { get; set; }
 
-    public void SetHealth( in float hp )
-    {
-        Health = hp.Clamp( 0f, MaxHealth );
+	public IEnumerable<IHealthEvent> HealthEvents { get; }
 
-        if ( Health > 0 )
-            Revive();
-        else if ( Health <= 0 )
-            Die();
-    }
+	public virtual void SetHealth( in float hp )
+	{
+		Health = hp.Clamp( 0f, MaxHealth );
 
-    public void ModifyHealth( in float hp )
-        => SetHealth( Health + hp );
+		foreach ( var e in HealthEvents )
+			e.OnSetHealth( hp );
 
-    public void Die()
-    {
-        if ( !IsAlive )
-            return;
+		if ( Health > 0 )
+			Revive();
+		else if ( Health <= 0 )
+			Die();
+	}
 
-        if ( Health > 0f )
-            Health = MathF.Min( 0f, Health );
+	public virtual void ModifyHealth( in float hp )
+		=> SetHealth( Health + hp );
 
-        IsAlive = false;
-        OnDeath();
-    }
+	public virtual void Die()
+	{
+		if ( !IsAlive )
+			return;
 
-    public void Revive( bool restoreHealth = false )
-    {
-        if ( IsAlive )
-            return;
+		if ( Health > 0f )
+			Health = MathF.Min( 0f, Health );
 
-        IsAlive = true;
+		IsAlive = false;
+		OnDeath();
+	}
 
-        if ( restoreHealth )
-            Health = MathF.Max( Health, MaxHealth );
+	public virtual void Revive( bool restoreHealth = false )
+	{
+		if ( IsAlive )
+			return;
 
-        OnRevival();
-    }
+		IsAlive = true;
 
-    protected void OnDeath() { }
-    protected void OnRevival() { }
+		if ( restoreHealth )
+			Health = MathF.Max( Health, MaxHealth );
 
-    public bool CanDamage( in DamageInfo dmgInfo )
-        => IsDestructible && dmgInfo.Damage > 0;
+		OnRevival();
+	}
 
-    public bool TryDamage( in DamageInfo dmgInfo )
-    {
-        if ( !CanDamage( in dmgInfo ) )
-            return false;
+	public virtual void OnDeath()
+	{
+		foreach ( var e in HealthEvents )
+			e.OnDeath();
+	}
 
-        ApplyDamage( dmgInfo );
-        return true;
-    }
+	public virtual void OnRevival()
+	{
+		foreach ( var e in HealthEvents )
+			e.OnRevival();
+	}
 
-    public void ApplyDamage( DamageInfo dmgInfo )
-        => ModifyHealth( dmgInfo.Damage );
+	public virtual bool CanDamage( in DamageInfo dmgInfo )
+	{
+		foreach ( var e in HealthEvents )
+			if ( !e.CanDamage( in dmgInfo ) )
+				return false;
+
+		return IsDestructible && dmgInfo.Damage > 0;
+	}
+
+	public virtual bool TryDamage( DamageInfo dmgInfo )
+	{
+		if ( !CanDamage( in dmgInfo ) )
+			return false;
+
+		foreach ( var e in HealthEvents )
+			if ( !e.TryDamage( ref dmgInfo ) )
+				return false;
+
+		ApplyDamage( dmgInfo );
+		return true;
+	}
+
+	public virtual void ApplyDamage( DamageInfo dmgInfo )
+	{
+		foreach ( var e in HealthEvents )
+			e.OnApplyDamage( ref dmgInfo );
+
+		ModifyHealth( -dmgInfo.Damage );
+	}
 }

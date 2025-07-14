@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
-
 namespace GameFish;
 
 /// <summary>
@@ -10,11 +7,19 @@ namespace GameFish;
 [Icon( "monitor_heart" )]
 public partial class HealthComponent : Component, IHealth
 {
+	/// <summary>
+	/// This is what you use to call <see cref="IHealth.TryDamage"/> and such.
+	/// </summary>
+	public IHealth Interface => this;
+
+	public IEnumerable<IHealthEvent> HealthEvents
+		=> Components?.GetAll<IHealthEvent>( FindMode.EnabledInSelfAndDescendants ) ?? [];
+
 	[Sync]
 	[Property, Feature( IHealth.FEATURE )]
 	public bool IsAlive { get; set; } = true;
 
-    /// <summary> Is this capable of ever taking damage? </summary>
+	/// <summary> Is this capable of ever taking damage? </summary>
 	[Property, Feature( IHealth.FEATURE )]
 	public virtual bool IsDestructible { get; set; } = true;
 
@@ -29,4 +34,18 @@ public partial class HealthComponent : Component, IHealth
 	[ShowIf( nameof( IsDestructible ), true )]
 	[Group( IHealth.GROUP_VALUES ), Feature( IHealth.FEATURE )]
 	public float MaxHealth { get; set; } = 100f;
+
+	[Property]
+	[ShowIf( nameof( IsDestructible ), true )]
+	[Feature( IHealth.FEATURE ), Group( BaseEntity.GROUP_DEBUG )]
+	public float DebugDamage { get; set; } = 25f;
+
+	[Button]
+	[Title( "Take Damage" )]
+	[ShowIf( nameof( IsDestructible ), true )]
+	[Feature( IHealth.FEATURE ), Group( BaseEntity.GROUP_DEBUG )]
+	protected void DebugTakeDamage()
+	{
+		Interface?.TryDamage( new() { Damage = 50 } );
+	}
 }

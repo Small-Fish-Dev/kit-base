@@ -18,37 +18,21 @@ partial class BaseEntity
 
 	[ShowIf( nameof( HasHealth ), true )]
 	[Property, Feature( IHealth.FEATURE )]
-	public bool IsAlive
-	{
-		get => HealthComponent?.IsAlive ?? false;
-		set { if ( HealthComponent.IsValid() ) HealthComponent.IsAlive = value; }
-	}
+	public bool IsAlive => HealthComponent?.IsAlive ?? false;
 
 	[ShowIf( nameof( HasHealth ), true )]
 	[Property, Feature( IHealth.FEATURE )]
-	public bool IsDestructible
-	{
-		get => HealthComponent?.IsDestructible ?? false;
-		set { if ( HealthComponent.IsValid() ) HealthComponent.IsDestructible = value; }
-	}
+	public bool IsDestructible => HealthComponent?.IsDestructible ?? false;
 
 	[Title( "Initial" )]
 	[Group( IHealth.GROUP_VALUES )]
 	[ShowIf( nameof( HasHealth ), true )]
 	[Property, Feature( IHealth.FEATURE )]
-	public float Health
-	{
-		get => HealthComponent?.Health ?? 0f;
-		set { if ( HealthComponent.IsValid() ) HealthComponent.Health = value; }
-	}
+	public float Health => HealthComponent?.Health ?? 0f;
 
 	[Title( "Max" )]
 	[Group( IHealth.GROUP_VALUES )]
 	[ShowIf( nameof( HasHealth ), true )]
 	[Property, Feature( IHealth.FEATURE )]
-	public float MaxHealth
-	{
-		get => HealthComponent?.MaxHealth ?? 0f;
-		set { if ( HealthComponent.IsValid() ) HealthComponent.MaxHealth = value; }
-	}
+	public float MaxHealth => HealthComponent?.MaxHealth ?? 0f;
 }
