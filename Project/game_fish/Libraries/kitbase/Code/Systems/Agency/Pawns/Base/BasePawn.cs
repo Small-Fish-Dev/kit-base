@@ -7,13 +7,13 @@ namespace GameFish;
 [EditorHandle( Icon = "person" )]
 public abstract partial class BasePawn : BaseActor
 {
-	public const string FEATURE_PAWN = "♟️ Pawn";
+	public const string FEATURE_PAWN = "Pawn";
 
 	// public override string ToString()
 	// => $"{GetType().ToSimpleString( includeNamespace: false )}|Agent:{Agent?.ToString() ?? "none"}";
 
-	[Property]
 	[Sync( SyncFlags.FromHost )]
+	[Property, Feature( FEATURE_PAWN )]
 	public Agent Agent
 	{
 		get => _owner;
@@ -43,7 +43,7 @@ public abstract partial class BasePawn : BaseActor
 
 	public void UpdateNetworking()
 	{
-		GameObject.NetworkSetup(
+		GameObject?.NetworkSetup(
 			cn: Agent?.Connection,
 			orphanMode: NetworkOrphaned.ClearOwner,
 			ownerTransfer: OwnerTransfer.Fixed,
@@ -57,9 +57,10 @@ public abstract partial class BasePawn : BaseActor
 	/// </summary>
 	protected void OnSetOwner( Agent old, Agent agent )
 	{
-		if ( !Networking.IsHost )
+		if ( !Networking.IsHost || !this.IsValid() )
 			return;
 
+		// Debug logging.
 		if ( old.IsValid() )
 		{
 			this.Log( agent.IsValid()
@@ -71,14 +72,21 @@ public abstract partial class BasePawn : BaseActor
 			this.Log( $"gained owner: {agent}" );
 		}
 
-		if ( old.IsValid() )
+		// Old agent might've been destroyed, but not null.
+		if ( old is not null )
 		{
-			if ( old.RemovePawn( this ) )
-				OnDropped( old );
+			// If valid: tell previous agent to drop this pawn.
+			if ( old.IsValid() )
+				old.RemovePawn( this );
+
+			// Let the pawn know they're dropped.
+			OnDropped( old );
 		}
 
+		// New agent must be valid.
 		if ( agent.IsValid() )
 		{
+			// Tell the new agent to register this pawn.
 			if ( agent.AddPawn( this ) )
 			{
 				OnTaken( old, agent );
@@ -89,6 +97,11 @@ public abstract partial class BasePawn : BaseActor
 				Agent = null;
 			}
 		}
+		else
+		{
+			// Always drop ownership if we don't belong to an agent.
+			Network.DropOwnership();
+		}
 	}
 
 	/// <summary>
@@ -96,7 +109,6 @@ public abstract partial class BasePawn : BaseActor
 	/// </summary>
 	protected virtual void OnTaken( Agent old, Agent agent )
 	{
-
 	}
 
 	/// <summary>
@@ -104,7 +116,6 @@ public abstract partial class BasePawn : BaseActor
 	/// </summary>
 	protected virtual void OnDropped( Agent old )
 	{
-
 	}
 
 	/// <summary>

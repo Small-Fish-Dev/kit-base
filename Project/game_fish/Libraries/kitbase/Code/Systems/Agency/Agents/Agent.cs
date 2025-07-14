@@ -81,11 +81,11 @@ public abstract partial class Agent : Component, IOperate
 			if ( cn is null )
 			{
 				this.Warn( "had a null connection while taking a pawn" );
+				return false;
 			}
 
-			if ( !pawn.Network.IsOwner )
-				if ( !pawn.Network.AssignOwnership( Connection ) )
-					return false;
+			if ( !pawn.Network.AssignOwnership( Connection ) )
+				return false;
 		}
 
 		if ( Pawns is null )
@@ -103,20 +103,13 @@ public abstract partial class Agent : Component, IOperate
 	public virtual bool RemovePawn( BasePawn pawn )
 	{
 		if ( !Networking.IsHost )
-		{
-			this.Warn( $"tried to remove Pawn:[{pawn}] from Agent:[{this}] as non-host" );
 			return false;
-		}
 
 		if ( !this.IsValid() || !Scene.IsValid() || Scene.IsEditor )
 			return false;
 
 		if ( pawn is null )
 			return false;
-
-		if ( pawn.IsValid() && pawn.Network.IsOwner )
-			if ( !pawn.Network.DropOwnership() )
-				return false;
 
 		ValidatePawns();
 
