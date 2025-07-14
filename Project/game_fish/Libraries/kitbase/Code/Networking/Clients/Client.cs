@@ -1,11 +1,11 @@
 namespace GameFish;
 
 /// <summary>
-/// A player-owned <see cref="Agent"/>.
+/// An <see cref="Agent"/> with an Identity that supports a connection.
 /// </summary>
 [Icon( "account_box" )]
 [EditorHandle( Icon = "account_box" )]
-public class Client : Agent
+public partial class Client : Agent
 {
 	public static Client Local => _local.GetSingleton( isOwned: true );
 	private static readonly Client _local;

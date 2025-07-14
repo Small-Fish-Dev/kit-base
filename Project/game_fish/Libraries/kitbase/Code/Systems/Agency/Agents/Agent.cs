@@ -100,26 +100,29 @@ public abstract partial class Agent : Component, IOperate
 		return true;
 	}
 
-	public virtual void RemovePawn( BasePawn pawn )
+	public virtual bool RemovePawn( BasePawn pawn )
 	{
 		if ( !Networking.IsHost )
 		{
 			this.Warn( $"tried to remove Pawn:[{pawn}] from Agent:[{this}] as non-host" );
-			return;
+			return false;
 		}
 
 		if ( !this.IsValid() || !Scene.IsValid() || Scene.IsEditor )
-			return;
+			return false;
 
 		if ( pawn is null )
-			return;
+			return false;
 
 		if ( pawn.IsValid() && pawn.Network.IsOwner )
-			pawn.Network.DropOwnership();
+			if ( !pawn.Network.DropOwnership() )
+				return false;
 
 		ValidatePawns();
 
 		OnLosePawn( pawn );
+
+		return true;
 	}
 
 	/// <summary>

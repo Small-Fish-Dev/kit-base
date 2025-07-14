@@ -72,13 +72,16 @@ public abstract partial class BasePawn : BaseActor
 		}
 
 		if ( old.IsValid() )
-			old.RemovePawn( this );
+		{
+			if ( old.RemovePawn( this ) )
+				OnDropped( old );
+		}
 
 		if ( agent.IsValid() )
 		{
 			if ( agent.AddPawn( this ) )
 			{
-				OnAdded( old, agent );
+				OnTaken( old, agent );
 			}
 			else
 			{
@@ -91,7 +94,15 @@ public abstract partial class BasePawn : BaseActor
 	/// <summary>
 	/// Called when our new <see cref="Agent"/> has been fully confirmed.
 	/// </summary>
-	protected virtual void OnAdded( Agent old, Agent agent )
+	protected virtual void OnTaken( Agent old, Agent agent )
+	{
+
+	}
+
+	/// <summary>
+	/// Called when an <see cref="Agent"/> has dropped this.
+	/// </summary>
+	protected virtual void OnDropped( Agent old )
 	{
 
 	}
