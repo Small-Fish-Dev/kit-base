@@ -32,7 +32,8 @@ public partial class CitizenOutfitter : Component, Component.ExecuteInEditor
 	public Clothing.Slots PreventAvatarSlots { get; set; } = 0;
 
 	/// <summary>
-	/// Add a default outfit? Overrides any avatar outfitting. Ignores <see cref="PreventAvatarSlots"/>.
+	/// If true: overlays a default outfit. <br />
+	/// Overrides any avatar outfitting. Ignores <see cref="PreventAvatarSlots"/>.
 	/// </summary>
 	[Property, Feature( FEATURE_OUTFIT ), Group( GROUP_DEFAULT )]
 	public bool UseDefault { get; set; }
@@ -67,7 +68,8 @@ public partial class CitizenOutfitter : Component, Component.ExecuteInEditor
 	{
 		base.OnStart();
 
-		ForceUpdate();
+		if ( this.InGame() )
+			ForceUpdate();
 	}
 
 	/// <summary>
@@ -158,7 +160,7 @@ public partial class CitizenOutfitter : Component, Component.ExecuteInEditor
 		return true;
 	}
 
-	public virtual void ApplyOutfit( bool withAvatar = false, bool withOverride = false )
+	public virtual void ApplyOutfit( bool forceAvatar = false, bool forceDefault = false )
 	{
 		if ( !Scene.IsValid() )
 			return;
@@ -166,10 +168,10 @@ public partial class CitizenOutfitter : Component, Component.ExecuteInEditor
 		ClothingContainer ??= new();
 		ClothingContainer.Clothing?.Clear();
 
-		if ( withAvatar || UseAvatar )
+		if ( forceAvatar || UseAvatar )
 			ApplyOutfit( Avatar );
 
-		if ( withOverride || UseDefault )
+		if ( forceDefault || UseDefault )
 			ApplyOutfit( Default );
 
 		ApplyOutfit( Override );
