@@ -130,15 +130,19 @@ public abstract partial class BasePawn : BaseActor
 		if ( !agent.IsValid() )
 			return false;
 
-		if ( agent is not Client cl )
+		// If it's a client then check for connection.
+		if ( agent is Client cl )
+		{
+			if ( !cl.IsValid() || !cl.Connected )
+				return false;
+
+			if ( Network.Owner is null || Network.Owner == cl.Connection )
+				return true;
+
 			return true;
+		}
 
-		if ( !cl.IsValid() || !cl.Connected )
-			return false;
-
-		if ( Network.Owner is null || Network.Owner == cl.Connection )
-			return true;
-
-		return false;
+		// No filtering by default for NPCs.
+		return true;
 	}
 }
