@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace GameFish;
 
@@ -16,6 +15,10 @@ public interface IHealth
 	abstract float Health { get; set; }
 	abstract float MaxHealth { get; set; }
 
+	/// <summary>
+	/// The collection of <see cref="IHealthEvent"/>s relevant to this object. <br />
+	/// Example: retrieved from a <see cref="ComponentList"/>.
+	/// </summary>
 	public IEnumerable<IHealthEvent> HealthEvents { get; }
 
 	public virtual void SetHealth( in float hp )

@@ -15,11 +15,18 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "GameFish.BasePlayer",
-        "__guid": "fed53c08-740c-478e-99ca-bb43a6dd25ae",
+        "__type": "GameFish.PlayerPawn",
+        "__guid": "00a167f2-9393-469a-879d-63a09e408188",
         "__enabled": true,
+        "Agent": null,
         "Health": 100,
-        "IsAlive": false,
+        "HealthComponent": {
+          "_type": "component",
+          "component_id": "21646fe7-b1c4-40a1-aafb-bc53b8edc077",
+          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+          "component_type": "HealthComponent"
+        },
+        "IsAlive": true,
         "IsDestructible": true,
         "MaxHealth": 100,
         "Model": {
@@ -28,6 +35,22 @@
           "go": "77ffd783-71f9-45f3-9f18-c9bd791a0356",
           "component_type": "ActorCitizenModel"
         },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "GameFish.HealthComponent",
+        "__guid": "21646fe7-b1c4-40a1-aafb-bc53b8edc077",
+        "__enabled": true,
+        "DebugDamage": 25,
+        "Health": 100,
+        "IsAlive": true,
+        "IsDestructible": true,
+        "MaxHealth": 100,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -376,7 +399,7 @@
         ],
         "Children": [
           {
-            "__guid": "866c5a5f-fbba-4819-ad0c-7a37f11f735e",
+            "__guid": "f0b6ffe8-0099-4155-af48-4128babec7b8",
             "__version": 1,
             "Flags": 0,
             "Name": "Clothing - hair_bobcut",
@@ -392,7 +415,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "fd670d5b-9844-4f66-994e-0c443bb16274",
+                "__guid": "6d1ed7a1-04a8-459d-8db0-3cdf6c1f2d64",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -442,7 +465,7 @@
             "Children": []
           },
           {
-            "__guid": "87aced8e-ffc4-4bb1-a7c5-a6c10cb0eb49",
+            "__guid": "d3b975ea-e46c-47e7-991a-d04347a0ca4c",
             "__version": 1,
             "Flags": 0,
             "Name": "Clothing - medieval_armour",
@@ -458,7 +481,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "15149811-1515-43db-ac5c-5e44d44a7ea2",
+                "__guid": "2d0bbeff-6a3e-4ab9-a27b-2a504875b366",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -508,7 +531,7 @@
             "Children": []
           },
           {
-            "__guid": "33f3d49a-9be9-4b98-9a3f-a05d5b7aab34",
+            "__guid": "8b4c94f5-eba2-4dc6-9d66-d0b4398584c8",
             "__version": 1,
             "Flags": 0,
             "Name": "Clothing - eyebrows_bushy",
@@ -524,7 +547,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "4c3495f4-dfa8-4522-8d02-96b09b187bec",
+                "__guid": "2dc71e1e-113b-41d0-80cd-0d3b63d041d1",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
