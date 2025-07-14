@@ -4,7 +4,7 @@ partial class BaseEntity
 {
     [Sync]
     [Property, Feature( IHealth.FEATURE )]
-    public bool IsAlive { get; set; }
+    public bool IsAlive { get; set; } = true;
 
     [Property, Feature( IHealth.FEATURE )]
     public virtual bool IsDestructible { get; set; }
