@@ -24,6 +24,9 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 	[Sync( SyncFlags.FromHost )]
 	public NetDictionary<Guid, Identity> IdentityHistory { get; set; }
 
+	/// <summary>
+	/// Time in seconds since the Unix epoch.
+	/// </summary>
 	public static long Time => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
 	protected override void OnStart()

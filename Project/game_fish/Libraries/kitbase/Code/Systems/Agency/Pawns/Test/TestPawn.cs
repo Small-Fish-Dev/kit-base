@@ -1,10 +1,10 @@
 namespace GameFish;
 
-partial class TestPawn : BasePawn
+public partial class TestPawn : BasePawn
 {
-	public override void Simulate( in float deltaTime )
+	public override void FrameOperate( in float deltaTime )
 	{
-		base.Simulate( deltaTime );
+		base.FrameOperate( deltaTime );
 
 		if ( Input.Pressed( "Jump" ) )
 			this.Log( "jumped" );

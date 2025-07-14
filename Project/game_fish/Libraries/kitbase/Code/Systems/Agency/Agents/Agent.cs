@@ -6,7 +6,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "psychology" )]
 [EditorHandle( Icon = "psychology" )]
-public abstract partial class Agent : Component, ISimulate
+public abstract partial class Agent : Component, IOperate
 {
 	public const string FEATURE_AGENT = "🧠 Agent";
 	public const string GROUP_ID = "🆔 Identity";
@@ -53,7 +53,7 @@ public abstract partial class Agent : Component, ISimulate
 	{
 		base.OnUpdate();
 
-		Simulate( Time.Delta );
+		FrameOperate( Time.Delta );
 	}
 
 	/// <summary>
@@ -218,7 +218,7 @@ public abstract partial class Agent : Component, ISimulate
 	}
 
 	/// <returns> If this computer can tell these pawns what to do. </returns>
-	public virtual bool CanSimulate()
+	public virtual bool CanOperate()
 	{
 		if ( !this.IsValid() || !Scene.IsValid() || Scene.IsEditor )
 			return false;
@@ -226,9 +226,9 @@ public abstract partial class Agent : Component, ISimulate
 		return !IsProxy;
 	}
 
-	public virtual void Simulate( in float deltaTime )
+	public virtual void FrameOperate( in float deltaTime )
 	{
-		if ( !CanSimulate() )
+		if ( !CanOperate() )
 			return;
 
 		SimulatePawns( deltaTime );
@@ -240,7 +240,7 @@ public abstract partial class Agent : Component, ISimulate
 			return;
 
 		foreach ( var pawn in Pawns )
-			if ( pawn.CanSimulate() )
-				pawn.Simulate( in deltaTime );
+			if ( pawn.CanOperate() )
+				pawn.FrameOperate( in deltaTime );
 	}
 }

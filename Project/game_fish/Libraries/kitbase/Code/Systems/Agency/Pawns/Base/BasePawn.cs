@@ -5,7 +5,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "person" )]
 [EditorHandle( Icon = "person" )]
-public abstract partial class BasePawn : BaseActor, ISimulate
+public abstract partial class BasePawn : BaseActor
 {
 	public const string FEATURE_PAWN = "♟️ Pawn";
 
@@ -116,9 +116,4 @@ public abstract partial class BasePawn : BaseActor, ISimulate
 
 		return false;
 	}
-
-	public virtual bool CanSimulate()
-		=> this.IsValid() && Network.IsOwner;
-
-	public virtual void Simulate( in float deltaTime ) { }
 }
