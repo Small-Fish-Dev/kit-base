@@ -7,7 +7,7 @@ namespace GameFish;
 [EditorHandle( Icon = "person" )]
 public abstract partial class BasePawn : BaseActor
 {
-	public const string FEATURE_PAWN = "Pawn";
+	public const string FEATURE_PAWN = "🙂 Pawn";
 
 	// public override string ToString()
 	// => $"{GetType().ToSimpleString( includeNamespace: false )}|Agent:{Agent?.ToString() ?? "none"}";
