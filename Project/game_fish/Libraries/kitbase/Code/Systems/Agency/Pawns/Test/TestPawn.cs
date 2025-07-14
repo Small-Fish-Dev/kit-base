@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class TestPawn : Pawn
+partial class TestPawn : BasePawn
 {
 	public override void Simulate( in float deltaTime )
 	{

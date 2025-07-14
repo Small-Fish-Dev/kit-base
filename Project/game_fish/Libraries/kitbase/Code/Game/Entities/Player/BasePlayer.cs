@@ -1,14 +1,6 @@
 namespace GameFish;
 
-public /*abstract*/ partial class BasePlayer : BaseActor
+public abstract partial class BasePlayer : BasePawn
 {
-
-
-	protected override void OnFixedUpdate()
-	{
-		base.OnFixedUpdate();
-
-		// TEMP: TESTING!
-		// Settings.TrySet( "Benis", WorldTransform );
-	}
+	public override bool IsDestructible { get => true; set { } }
 }

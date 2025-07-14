@@ -22,7 +22,7 @@ public abstract partial class Agent : Component, ISimulate
 	/// </summary>
 	[Sync( SyncFlags.FromHost )]
 	[Property, ReadOnly, Feature( FEATURE_AGENT )]
-	public NetList<Pawn> Pawns { get; set; }
+	public NetList<BasePawn> Pawns { get; set; }
 
 	public virtual Identity Identity { get; protected set; }
 	public virtual Connection Connection => null;
@@ -57,9 +57,9 @@ public abstract partial class Agent : Component, ISimulate
 	}
 
 	/// <summary>
-	/// Called by the host to register an assigned pawn on this agent.
+	/// Called by the host to register a pawn assigned to this agent.
 	/// </summary>
-	public virtual bool AddPawn( Pawn pawn )
+	public virtual bool AddPawn( BasePawn pawn )
 	{
 		if ( !Networking.IsHost )
 			return false;
@@ -89,13 +89,9 @@ public abstract partial class Agent : Component, ISimulate
 		}
 
 		if ( Pawns is null )
-		{
 			Pawns = [pawn];
-		}
 		else if ( !Pawns.Contains( pawn ) )
-		{
 			Pawns.Add( pawn );
-		}
 
 		ValidatePawns();
 
@@ -104,7 +100,7 @@ public abstract partial class Agent : Component, ISimulate
 		return true;
 	}
 
-	public virtual void RemovePawn( Pawn pawn )
+	public virtual void RemovePawn( BasePawn pawn )
 	{
 		if ( !Networking.IsHost )
 		{
@@ -129,14 +125,14 @@ public abstract partial class Agent : Component, ISimulate
 	/// <summary>
 	/// Called after a pawn we owned was confirmed to be removed.
 	/// </summary>
-	protected virtual void OnLosePawn( Pawn pawn )
+	protected virtual void OnLosePawn( BasePawn pawn )
 	{
 	}
 
 	/// <summary>
 	/// Called after a pawn we didn't own is confirmed to be owned.
 	/// </summary>
-	protected virtual void OnGainPawn( Pawn pawn )
+	protected virtual void OnGainPawn( BasePawn pawn )
 	{
 	}
 
@@ -154,7 +150,7 @@ public abstract partial class Agent : Component, ISimulate
 		if ( Pawns is null )
 			return;
 
-		var toRemove = new List<Pawn>();
+		var toRemove = new List<BasePawn>();
 
 		foreach ( var pawn in Pawns )
 			if ( !pawn.IsValid() || pawn.Agent != this )
@@ -166,7 +162,7 @@ public abstract partial class Agent : Component, ISimulate
 	/// <summary>
 	/// Sends a request to the host to take a pawn.
 	/// </summary>
-	public AttemptStatus RequestTakePawn( Pawn pawn )
+	public AttemptStatus RequestTakePawn( BasePawn pawn )
 	{
 		if ( !pawn.IsValid() || !pawn.AllowOwnership( this ) )
 			return AttemptStatus.Failure;
@@ -177,12 +173,12 @@ public abstract partial class Agent : Component, ISimulate
 	}
 
 	[Rpc.Host( NetFlags.Reliable | NetFlags.OwnerOnly )]
-	protected void RpcRequestTakePawn( Pawn pawn )
+	protected void RpcRequestTakePawn( BasePawn pawn )
 	{
 		TryTakePawn( pawn );
 	}
 
-	public virtual AttemptStatus TryTakePawn( Pawn pawn )
+	public virtual AttemptStatus TryTakePawn( BasePawn pawn )
 	{
 		AttemptStatus Result( in AttemptStatus result )
 		{
@@ -211,13 +207,13 @@ public abstract partial class Agent : Component, ISimulate
 	/// This is the method you want to call so the host can tell the owner what happened.
 	/// </summary>
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
-	protected void RpcTryTakePawnHostResponse( Pawn pawn, AttemptStatus result )
+	protected void RpcTryTakePawnHostResponse( BasePawn pawn, AttemptStatus result )
 	{
 		if ( pawn.IsValid() )
 			OnTryTakePawnResponse( pawn, result );
 	}
 
-	protected virtual void OnTryTakePawnResponse( Pawn pawn, in AttemptStatus result )
+	protected virtual void OnTryTakePawnResponse( BasePawn pawn, in AttemptStatus result )
 	{
 	}
 

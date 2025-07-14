@@ -5,7 +5,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "person" )]
 [EditorHandle( Icon = "person" )]
-public abstract partial class Pawn : Component, ISimulate
+public abstract partial class BasePawn : BaseActor, ISimulate
 {
 	public const string FEATURE_PAWN = "♟️ Pawn";
 
