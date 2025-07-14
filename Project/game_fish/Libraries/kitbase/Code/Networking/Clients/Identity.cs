@@ -19,7 +19,7 @@ public partial struct Identity : IValid
 	public ClientType Type { get; private set; } = ClientType.Invalid;
 
 	/// <summary>
-	/// The owner of this identity.
+	/// The component that owns this identity.
 	/// </summary>
 	public Client Client { get; private set; }
 
@@ -86,7 +86,7 @@ public partial struct Identity : IValid
 
 	public override readonly int GetHashCode() => HashCode.Combine( Created.GetHashCode(), Id.GetHashCode(), Name?.GetHashCode() );
 
-	public static bool operator ==( Identity a, Identity b ) => a.IsValid() && a.GetHashCode() == b.GetHashCode();
+	public static bool operator ==( Identity a, Identity b ) => a.IsValid() && (a.Id == b.Id || a.SteamId == b.SteamId);
 	public static bool operator !=( Identity a, Identity b ) => !(a == b);
 
 	public override readonly bool Equals( object obj )
