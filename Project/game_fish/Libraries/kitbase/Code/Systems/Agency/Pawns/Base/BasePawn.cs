@@ -5,7 +5,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "person" )]
 [EditorHandle( Icon = "person" )]
-public abstract partial class BasePawn : BaseActor
+public abstract partial class BasePawn : PhysicsEntity
 {
 	public const string FEATURE_PAWN = "🙂 Pawn";
 
@@ -58,7 +58,7 @@ public abstract partial class BasePawn : BaseActor
 	/// <summary>
 	/// Called when the <see cref="Agent"/> property has been set to a new value.
 	/// </summary>
-	protected void OnSetOwner( Agent old, Agent agent )
+	protected virtual void OnSetOwner( Agent old, Agent agent )
 	{
 		if ( !Networking.IsHost || !this.IsValid() )
 			return;
