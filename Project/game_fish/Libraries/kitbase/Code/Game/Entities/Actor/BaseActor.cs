@@ -1,7 +1,7 @@
 namespace GameFish;
 
 /// <summary>
-/// Something with physics and an <see cref="ActorModel"/> that can take damage.
+/// Something that supports physics and has an <see cref="ActorModel"/>.
 /// </summary>
 public partial class BaseActor : PhysicsEntity
 {
