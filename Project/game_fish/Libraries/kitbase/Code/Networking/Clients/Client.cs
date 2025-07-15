@@ -1,5 +1,3 @@
-using System;
-
 namespace GameFish;
 
 /// <summary>
@@ -52,7 +50,11 @@ public partial class Client : Agent
 	{
 		base.OnDestroy();
 
-		this.Log( "was destroyed" );
+		if ( GameObject.IsValid() )
+		{
+			this.Log( $"was destroyed. cleaning up object:[{GameObject}]" );
+			GameObject.Destroy();
+		}
 	}
 
 	/// <summary>
