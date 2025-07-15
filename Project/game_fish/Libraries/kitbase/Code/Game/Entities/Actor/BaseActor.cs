@@ -6,6 +6,7 @@ namespace GameFish;
 public partial class BaseActor : PhysicsEntity
 {
 	public const string FEATURE_ACTOR = "🎭 Actor";
+	public const string GROUP_ACTOR = FEATURE_ACTOR;
 
 	/// <summary>
 	/// The model of the actor, which may be <see cref="ActorSkinnedModel"/> or some other kind.

@@ -35,7 +35,18 @@ public abstract partial class BasePawn : PhysicsEntity
 			OnSetOwner( old, value );
 		}
 	}
-	private Agent _owner;
+
+	protected Agent _owner;
+
+	/// <summary>
+	/// The thing with the model that does the stuff.
+	/// </summary>
+	[Property]
+	[Feature( FEATURE_PAWN ), Group( BaseActor.FEATURE_ACTOR )]
+	public BaseActor Actor => _actor = _actor.IsValid() ? _actor
+		: Components?.Get<BaseActor>( FindMode.EverythingInSelf );
+
+	protected BaseActor _actor;
 
 	protected override void OnEnabled()
 	{
