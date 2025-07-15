@@ -5,10 +5,10 @@ namespace GameFish;
 /// </summary>
 public partial class BaseEntity : Component, ITransform
 {
+	public const string DEBUG = "🐞 Debug";
+
 	public const string FEATURE_ENTITY = "📦 Entity";
 	public const string FEATURE_NPC = "🤖 NPC";
-
-	public const string GROUP_DEBUG = "🐞 Debug";
 
 	public const string TAG_ENTITY = "entity";
 	public const string TAG_PROJECTILE = "projectile";

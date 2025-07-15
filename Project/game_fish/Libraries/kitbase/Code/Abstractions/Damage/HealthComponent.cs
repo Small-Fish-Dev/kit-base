@@ -37,13 +37,13 @@ public partial class HealthComponent : Component, IHealth
 
 	[Property]
 	[ShowIf( nameof( IsDestructible ), true )]
-	[Feature( IHealth.FEATURE ), Group( BaseEntity.GROUP_DEBUG )]
+	[Feature( IHealth.FEATURE ), Group( BaseEntity.DEBUG )]
 	public float DebugDamage { get; set; } = 25f;
 
 	[Button]
 	[Title( "Take Damage" )]
 	[ShowIf( nameof( IsDestructible ), true )]
-	[Feature( IHealth.FEATURE ), Group( BaseEntity.GROUP_DEBUG )]
+	[Feature( IHealth.FEATURE ), Group( BaseEntity.DEBUG )]
 	protected void DebugTakeDamage()
 	{
 		Interface?.TryDamage( new() { Damage = 50 } );

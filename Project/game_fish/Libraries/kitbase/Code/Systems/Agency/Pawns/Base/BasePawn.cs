@@ -67,12 +67,12 @@ public abstract partial class BasePawn : BaseActor
 		if ( old.IsValid() )
 		{
 			this.Log( agent.IsValid()
-				? $"owner changed: {old} -> {agent}"
-				: $"lost owner: {old}" );
+				? $"owner changed: [{old}] -> [{agent}]"
+				: $"lost owner: [{old}]" );
 		}
 		else if ( agent.IsValid() )
 		{
-			this.Log( $"gained owner: {agent}" );
+			this.Log( $"gained owner:[{agent}]" );
 		}
 
 		// Old agent might've been destroyed, but not null.
@@ -96,7 +96,7 @@ public abstract partial class BasePawn : BaseActor
 			}
 			else
 			{
-				this.Warn( $"failed to add Pawn:{this} to Agent:{agent}" );
+				this.Warn( $"failed to add Pawn:[{this}] to Agent:[{agent}]" );
 				Agent = null;
 			}
 		}
@@ -115,7 +115,7 @@ public abstract partial class BasePawn : BaseActor
 	}
 
 	/// <summary>
-	/// Called when an <see cref="Agent"/> has dropped this.
+	/// Called whenever an <see cref="Agent"/> stops owning this.
 	/// </summary>
 	protected virtual void OnDropped( Agent old )
 	{

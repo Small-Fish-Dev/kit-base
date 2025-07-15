@@ -10,8 +10,11 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 {
 	public const string FEATURE_DEBUG = "🐞 Debug";
 
-	[Property]
+	[Property, Feature( Agent.FEATURE_AGENT )]
 	public PrefabFile PlayerClientPrefab { get; set; }
+
+	[Property, Feature( Agent.FEATURE_AGENT )]
+	public PrefabFile PlayerPawnPrefab { get; set; }
 
 	[Sync( SyncFlags.FromHost )]
 	public NetList<Client> ClientList { get; set; }
@@ -50,10 +53,7 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 			return;
 		}
 
-		var cl = AssignClient( PlayerClientPrefab, cn );
-
-		if ( cl.IsValid() )
-			cl.AssignConnection( cn, out _ );
+		AssignClient( PlayerClientPrefab, cn );
 	}
 
 	public void OnDisconnected( Connection cn )
@@ -65,32 +65,53 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 	}
 
 	/// <summary>
-	/// Finds an existing, or creates and registers a new Client object.
+	/// Finds an existing(or creates and registers a new) <see cref="Client"/> object.
 	/// </summary>
-	protected virtual Client AssignClient( PrefabFile clPrefab, Connection cn = null )
-	{
-		var cl = FindClient( cn );
+	protected virtual Client AssignClient( PrefabFile prefab, Connection cn = null )
+		=> AssignClient<Client>( prefab, cn );
 
+	/// <summary>
+	/// Finds an existing(or creates and registers a new) <typeparamref name="TClient"/> object.
+	/// </summary>
+	protected virtual TClient AssignClient<TClient>( PrefabFile prefab, Connection cn = null ) where TClient : Client
+	{
+		if ( !Networking.IsHost )
+		{
+			this.Warn( $"tried to assign client prefab:[{prefab}] on non-host" );
+			return null;
+		}
+
+		Client cl = FindClient( cn );
+
+		// Create a new client if we couldn't find an existing one.
 		if ( !cl.IsValid() )
 		{
-			if ( !clPrefab.TrySpawn( out var go ) )
+			if ( !prefab.TrySpawn( out var go ) )
 			{
-				this.Warn( $"Failed to spawn client prefab [{clPrefab}]! Result: [{go}]" );
+				this.Warn( $"Failed to spawn client prefab:[{prefab}]!" );
 				return null;
 			}
 
-			cl = go.Components.Get<Client>( FindMode.EverythingInSelf );
+			cl = go.Components.Get<TClient>( FindMode.EverythingInSelf );
 
 			if ( !cl.IsValid() )
 			{
-				this.Warn( $"Failed to find {nameof( Client )} component on [{go}]!" );
+				this.Warn( $"Failed to find type:[{typeof( TClient )}] component on object:[{go}]!" );
+				go.Destroy();
+
 				return null;
 			}
+
+			cl.AssignConnection( cn, out _ );
 
 			RegisterClient( cl );
 		}
 
-		return cl;
+		// Spawn and assign their default pawn.
+		if ( cl.IsValid() )
+			cl.SetPawn( PlayerPawnPrefab, dropAll: true );
+
+		return cl as TClient;
 	}
 
 	public static Client FindClient( Connection cn )
@@ -107,7 +128,7 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 	{
 		ClientList ??= [];
 
-		if ( ClientList.Contains( cl ) )
+		if ( !cl.IsValid() || ClientList.Contains( cl ) )
 			return;
 
 		ClientList.Add( cl );
@@ -126,7 +147,7 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 			if ( !cl.IsValid() || cl.Scene != Scene )
 				toRemove.Add( cl );
 
-		toRemove.ForEach( cl => ClientList.Remove( cl ) );
+		toRemove.ForEach( cl => { ClientList.Remove( cl ); cl.Destroy(); } );
 	}
 
 	/// <summary>

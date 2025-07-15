@@ -52,13 +52,16 @@
                   "__type": "GameFish.Server",
                   "__guid": "097637a4-25b2-4791-af6f-894b98828e85",
                   "__enabled": true,
+                  "ActivePawns": [],
+                  "AllPawns": [],
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
-                  "PlayerClientPrefab": "prefabs/net/clients/client_player.prefab"
+                  "PlayerClientPrefab": "prefabs/net/clients/client_player.prefab",
+                  "PlayerPawnPrefab": "prefabs/kit_fps/player/player_fps.prefab"
                 }
               ],
               "Children": []
