@@ -3,8 +3,8 @@ using System;
 namespace GameFish;
 
 /// <summary>
-/// Networkable client information for data/session persistence. <br />
-/// In other words: lets you remember stuff about clients between sessions.
+/// Networkable identifying client information for data/session persistence. <br />
+/// In other words: the key used to remember stuff about clients between sessions.
 /// </summary>
 public partial struct Identity : IValid
 {

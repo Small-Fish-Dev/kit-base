@@ -56,6 +56,98 @@ public abstract partial class Agent : Component, IOperate
 		FrameOperate( Time.Delta );
 	}
 
+	/// <returns> A random default spawn point's transform(if any). </returns>
+	public virtual Transform? GetSpawnPoint()
+	{
+		return Game.Random.FromArray( Scene?.GetAll<SpawnPoint>()?.ToArray() )
+			?.WorldTransform.WithScale( 1f );
+	}
+
+	/// <summary>
+	/// Spawns a <see cref="BasePawn"/> prefab and assigns it to this agent.
+	/// </summary>
+	/// <param name="prefab"></param>
+	/// <param name="dropAll"> Set this as the only owned pawn? </param>
+	public BasePawn SetPawn( PrefabFile prefab, bool dropAll = true )
+		=> SetPawn<BasePawn>( prefab, dropAll: dropAll );
+
+	/// <summary>
+	/// Spawns a <typeparamref name="TPawn"/> prefab and assigns it to this agent.
+	/// </summary>
+	/// <param name="prefab"></param>
+	/// <param name="dropAll"> Set this as the only owned pawn? </param>
+	public TPawn SetPawn<TPawn>( PrefabFile prefab, bool dropAll = true ) where TPawn : BasePawn
+	{
+		if ( !Networking.IsHost )
+		{
+			this.Warn( $"tried to spawn/set pawn prefab:[{prefab}] on non-host" );
+			return null;
+		}
+
+		if ( !prefab.IsValid() )
+		{
+			this.Warn( $"tried to set null pawn prefab of type:[{typeof( TPawn )}]" );
+			return null;
+		}
+
+		var spawnPoint = GetSpawnPoint();
+
+		if ( !spawnPoint.HasValue )
+		{
+			this.Warn( $"failed to find valid spawn point when setting pawn prefab:[{prefab}]" );
+			return null;
+		}
+
+		if ( !prefab.TrySpawn( spawnPoint.GetValueOrDefault().WithScale( 1f ), out var go ) )
+			return null;
+
+		return SetPawn<TPawn>( go, dropAll: dropAll, failDestroy: true );
+	}
+
+	/// <summary>
+	/// Assigns a pawn to this agent from an existing object.
+	/// </summary>
+	/// <param name="go"> The <see cref="GameObject"/> with <typeparamref name="TPawn"/> on it. </param>
+	/// <param name="dropAll"> Set this as the only owned pawn? </param>
+	/// <param name="failDestroy"> Destroy the object upon failure? </param>
+	public TPawn SetPawn<TPawn>( GameObject go, bool dropAll = true, bool failDestroy = false ) where TPawn : BasePawn
+	{
+		if ( !Networking.IsHost )
+		{
+			this.Warn( $"tried to set pawn object:[{go}] on non-host" );
+			return null;
+		}
+
+		if ( !go.IsValid() )
+		{
+			this.Warn( $"tried to set pawn as invalid object:[{go}]" );
+			return null;
+		}
+
+		var pComp = go.Components.Get<TPawn>( true );
+
+		if ( !pComp.IsValid() )
+		{
+			this.Warn( $"failed to find type:[{typeof( TPawn )}] on object:[{go}]" );
+
+			if ( failDestroy )
+			{
+				this.Warn( $"failure detected. destroying object:[{go}]" );
+				go.Destroy();
+			}
+
+			return null;
+		}
+
+		pComp.Agent = this;
+
+		if ( dropAll && Pawns is not null )
+			foreach ( var p in Pawns.Where( p => p.IsValid() && p != pComp ) )
+				p.Agent = null;
+
+		return pComp;
+	}
+
 	/// <summary>
 	/// Called by the host to register a pawn assigned to this agent.
 	/// </summary>
@@ -92,6 +184,8 @@ public abstract partial class Agent : Component, IOperate
 			Pawns = [pawn];
 		else if ( !Pawns.Contains( pawn ) )
 			Pawns.Add( pawn );
+
+		this.Log( $"added pawn:[{pawn}]" );
 
 		ValidatePawns();
 
@@ -149,8 +243,13 @@ public abstract partial class Agent : Component, IOperate
 		var toRemove = new List<BasePawn>();
 
 		foreach ( var pawn in Pawns )
+		{
 			if ( !pawn.IsValid() || pawn.Agent != this )
+			{
+				this.Log( $"removed invalid pawn:[{pawn}]" );
 				toRemove.Add( pawn );
+			}
+		}
 
 		toRemove.ForEach( cl => Pawns.Remove( cl ) );
 	}
