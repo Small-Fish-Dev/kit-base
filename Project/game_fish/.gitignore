@@ -27,5 +27,5 @@ code/Properties/*
 # Exported / standalone games
 Exports/
 
-# Kit example content
-!Assets/*/example/*
+# Library example content
+!*gamefish*.vpk
