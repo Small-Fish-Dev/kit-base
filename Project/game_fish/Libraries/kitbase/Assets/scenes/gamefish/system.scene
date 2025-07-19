@@ -60,8 +60,8 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
-                  "PlayerClientPrefab": "prefabs/net/clients/client_player.prefab",
-                  "PlayerPawnPrefab": "prefabs/kit_fps/player/player_fps.prefab"
+                  "PlayerClientPrefab": "prefabs/gamefish/net/clients/client_player.prefab",
+                  "PlayerPawnPrefab": "prefabs/gamefish/kit_fps/player/player_fps.prefab"
                 }
               ],
               "Children": []

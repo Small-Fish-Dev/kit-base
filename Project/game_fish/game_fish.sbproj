@@ -23,8 +23,8 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "StartupScene": "scenes/examples/default.scene",
+    "StartupScene": "scenes/gamefish/example1.scene",
     "LaunchMode": "Normal",
-    "SystemScene": "scenes/system.scene"
+    "SystemScene": "scenes/gamefish/system.scene"
   }
 }
