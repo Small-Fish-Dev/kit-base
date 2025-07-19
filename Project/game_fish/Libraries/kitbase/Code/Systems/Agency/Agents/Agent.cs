@@ -6,7 +6,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "psychology" )]
 [EditorHandle( Icon = "psychology" )]
-public abstract partial class Agent : Component, IOperate
+public abstract partial class Agent : Component
 {
 	public const string FEATURE_AGENT = "🧠 Agent";
 	public const string GROUP_ID = "🆔 Identity";
@@ -25,11 +25,11 @@ public abstract partial class Agent : Component, IOperate
 	public NetList<BasePawn> Pawns { get; set; }
 
 	public virtual Identity Identity { get; protected set; }
-	public virtual Connection Connection => null;
+	public virtual Connection Connection => Connection.Host;
 
 	/// <summary>
 	/// If NPC/Bot: always true. ('cause they in the matrix or some shit) <br />
-	/// If Client: if the connection exists and is active.
+	/// If <see cref="Client"/>: if the connection exists and is active.
 	/// </summary>
 	public virtual bool Connected => true;
 
@@ -53,7 +53,47 @@ public abstract partial class Agent : Component, IOperate
 	{
 		base.OnUpdate();
 
-		FrameOperate( Time.Delta );
+		SimulatePawns( Time.Delta );
+	}
+
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+
+		UpdateNetworking();
+	}
+
+	public virtual void UpdateNetworking()
+	{
+		if ( !Networking.IsHost )
+			return;
+
+		GameObject?.NetworkSetup(
+			cn: Connection,
+			orphanMode: NetworkOrphaned.Destroy,
+			ownerTransfer: OwnerTransfer.Fixed,
+			netMode: NetworkMode.Object,
+			ignoreProxy: false
+		);
+	}
+
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		DropAllPawns();
+	}
+
+	public void DropAllPawns()
+	{
+		if ( !Networking.IsHost || Pawns is null )
+			return;
+
+		foreach ( var pawn in Pawns )
+			if ( pawn.IsValid() && pawn.Agent == this )
+				pawn.Agent = null;
+
+		Pawns?.Clear();
 	}
 
 	/// <returns> A random default spawn point's transform(if any). </returns>
@@ -319,14 +359,6 @@ public abstract partial class Agent : Component, IOperate
 			return false;
 
 		return !IsProxy;
-	}
-
-	public virtual void FrameOperate( in float deltaTime )
-	{
-		if ( !CanOperate() )
-			return;
-
-		SimulatePawns( deltaTime );
 	}
 
 	protected virtual void SimulatePawns( in float deltaTime )

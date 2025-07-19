@@ -50,7 +50,15 @@ public abstract partial class BasePawn : PhysicsEntity
 		set { _actor = value; }
 	}
 
+	[Property]
+	[Feature( FEATURE_PAWN )]
+	public SkinnedModelRenderer ViewModel { get; set; }
+
 	protected BaseActor _actor;
+
+	public virtual Vector3 EyePosition => WorldPosition;
+	public virtual Rotation EyeRotation => WorldRotation;
+	public Vector3 EyeForward => EyeRotation.Forward;
 
 	protected override void OnEnabled()
 	{
@@ -61,6 +69,9 @@ public abstract partial class BasePawn : PhysicsEntity
 
 	public void UpdateNetworking()
 	{
+		if ( !Networking.IsHost )
+			return;
+
 		GameObject?.NetworkSetup(
 			cn: Agent?.Connection,
 			orphanMode: NetworkOrphaned.ClearOwner,

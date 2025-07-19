@@ -1,5 +1,9 @@
 namespace GameFish;
 
+/// <summary>
+/// A component you can access anywhere using its <see cref="Instance"/> property.
+/// </summary>
+/// <typeparam name="TComp"> The component you want to be a singleton. </typeparam>
 public abstract class Singleton<TComp> : Component where TComp : Component
 {
 	private static TComp _instance;

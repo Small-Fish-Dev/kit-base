@@ -65,6 +65,8 @@ public partial class Client : Agent
 		id = new Identity( this, cn );
 		Identity = id;
 
+		UpdateNetworking();
+
 		this.Log( "assigned connection: " + cn );
 	}
 

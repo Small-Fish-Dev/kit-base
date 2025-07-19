@@ -114,7 +114,7 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 	public virtual VelocityRelation LinearRelation { get; set; } = VelocityRelation.Absolute;
 
 	/// <summary>
-	/// When/how linear velocity(momentum) should be added.
+	/// Allows you to (optionally) cancel out all/opposing momentum.
 	/// </summary>
 	[Title( TITLE_NEGATION )]
 	[Property, Feature( FEATURE_FORCES ), Group( GROUP_LINEAR )]

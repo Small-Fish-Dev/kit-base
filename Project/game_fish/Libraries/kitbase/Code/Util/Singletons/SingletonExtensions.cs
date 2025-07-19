@@ -19,7 +19,7 @@ public static class SingletonExtensions
 			return null;
 
 		instance = isOwned
-			? Game.ActiveScene.GetAllComponents<T>().FirstOrDefault( c => c.IsValid() && (c.Network?.IsOwner ?? false) )
+			? Game.ActiveScene.GetAllComponents<T>().FirstOrDefault( c => c.IsOwner() )
 			: Game.ActiveScene.GetAllComponents<T>().FirstOrDefault();
 
 		return instance;
