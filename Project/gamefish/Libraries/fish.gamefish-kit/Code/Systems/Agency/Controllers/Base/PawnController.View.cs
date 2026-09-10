@@ -110,14 +110,22 @@ partial class PawnController
 
 	public Vector3 EyePosition
 	{
-		get => Pawn?.EyePosition ?? WorldTransform.PointToWorld( LocalEyePosition );
-		set { if ( Pawn.IsValid() ) Pawn.EyePosition = value; }
+		get => Pawn?.EyePosition ?? GameObject?.WorldTransform.PointToWorld( LocalEyePosition ) ?? default;
+		set
+		{
+			if ( Pawn.IsValid() )
+				Pawn.EyePosition = value;
+		}
 	}
 
 	public Rotation EyeRotation
 	{
-		get => Pawn?.EyeRotation ?? WorldTransform.RotationToWorld( LocalEyeRotation );
-		set { if ( Pawn.IsValid() ) Pawn.EyeRotation = value; }
+		get => Pawn?.EyeRotation ?? GameObject?.WorldTransform.RotationToWorld( LocalEyeRotation ) ?? Rotation.Identity;
+		set
+		{
+			if ( Pawn.IsValid() )
+				Pawn.EyeRotation = value;
+		}
 	}
 
 	public Transform EyeTransform => Pawn?.EyeTransform ?? new( EyePosition, EyeRotation, WorldScale );
