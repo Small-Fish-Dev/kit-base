@@ -6,7 +6,7 @@ partial class Library
 	/// Returns explicitly <c>null</c> if this reference is invalid.
 	/// </summary>
 	/// <remarks>
-	/// Lets you skip checking if a <typeparamref name="TValid"/> is valid and not simply null.
+	/// Lets you skip checking if a valid <typeparamref name="TValid"/> and not simply null.
 	/// <br /> <br />
 	/// <b> BEFORE: </b> <c> var thing = one.IsValid() ? one : (two.IsValid() ? two : null); </c>
 	/// <br />
@@ -70,7 +70,7 @@ partial class Library
 	public static bool IsValid<TValid>( this TValid v, out TValid obj ) where TValid : class, IValid
 	{
 		obj = v.AsValid();
-		return v is not null;
+		return obj is not null;
 	}
 
 	/// <summary>
