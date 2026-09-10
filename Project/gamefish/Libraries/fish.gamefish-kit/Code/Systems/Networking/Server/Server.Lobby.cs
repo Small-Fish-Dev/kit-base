@@ -16,12 +16,20 @@ partial class Server : ISceneLoadingEvents
 
 	Task ISceneLoadingEvents.OnLoad( Scene scene, SceneLoadOptions options )
 	{
-		AutoStart();
+		if ( InGame )
+			AutoStart();
+
 		return Task.CompletedTask;
 	}
 
 	public virtual void AutoStart()
 	{
+		if ( !InGame )
+		{
+			this.Warn( "Tried to auto-start a lobby while not ingame!" );
+			return;
+		}
+
 		if ( Networking.IsActive )
 			return;
 
@@ -110,6 +118,9 @@ partial class Server : ISceneLoadingEvents
 	/// <returns> If the new lobby could be created. </returns>
 	public virtual async Task<bool> TryCreateLobby( object context = null, LobbyConfig? cfgOverride = null )
 	{
+		if ( !InGame )
+			return false;
+
 		if ( Networking.IsActive )
 		{
 			this.Warn( "Lobby creation failed: must close the active lobby first." );

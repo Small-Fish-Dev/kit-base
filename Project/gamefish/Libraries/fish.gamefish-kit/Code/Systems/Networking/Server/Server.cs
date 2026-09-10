@@ -44,7 +44,8 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 	{
 		base.OnStart();
 
-		AutoStart();
+		if ( InGame )
+			AutoStart();
 	}
 
 	public virtual void OnActive( Connection cn )
