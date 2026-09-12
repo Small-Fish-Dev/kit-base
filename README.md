@@ -8,14 +8,16 @@ If you like what you see then remember: it's all MIT licensed. And we do like he
 
 ### What?
 
-A game creation library with a ton of great utilities.
+A framework library for s&box with a ton of great utilities.
+
+It's designed to be extremely modular and inherently multiplayer compatible.
+
+The module system allows you to add/remove functionalities at runtime live. Very powerful!
 
 **Planned:**
 - FPS Kit
 - Vehicle Kit
 - Platformer Kit
-
-They would all be able interact with each other where it makes sense.
 
 ### Why?
 
